@@ -37,13 +37,13 @@ class Wrapper {
     if(detail){
       obj["目前持股"] = data;
     }
-    console.log(obj);
+    // console.log(obj);
     return obj;
   }
 
   history(){
     let data = this.context.stock.getHistory();
-    console.log(data);
+    // console.log(data);
     return data;
   }
 }

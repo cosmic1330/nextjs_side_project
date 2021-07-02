@@ -1,5 +1,5 @@
 {
-    "title": "{v{alue}} | 國際化",
+    "title": "{{value}} | 國際化",
     "footer":{
         "description": "這是中文description"
     },

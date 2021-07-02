@@ -1,11 +1,7 @@
-const fs = require("fs");
-let rawdata = fs.readFileSync("./data/20210629.json");
-let stockdata = JSON.parse(rawdata);
-
 // 測試看資料是否統一長度
 
 class Date {
-  constructor({defaultDataCount=30, data = stockdata}) {
+  constructor({defaultDataCount=30, data}) {
     let obj = {};
     let lengthArr = Object.keys(data).map((element) => {
       obj[element] = data[element].filter((item,index)=>index<=defaultDataCount);
