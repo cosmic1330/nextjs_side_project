@@ -36,16 +36,31 @@ class BuyMethod {
           index >= list[key].length - 19 && index <= list[key].length - 2
       )
     );
+
+    let response = list[key][list[key].length - 1];
     if (
       william9 > -80 &&
       beforeWilliam9 < -80 &&
       william18 > -80 &&
       beforeWilliam18 < -80
     ) {
-      return list[key][list[key].length - 1];
+      /* 
+        custom提供驗證訊息
+      */
+      response['custom'] = {
+        ...response,
+        william9,
+        beforeWilliam9,
+        william18,
+        beforeWilliam18,
+        method: 1,
+        class: "buy",
+      };
+      response.status = true;
     } else {
-      return false;
+      response.status = false;
     }
+    return response;
   }
 
   method2(list, key) {
@@ -62,30 +77,40 @@ class BuyMethod {
         list[key][list[key].length - 4]["c"] +
         list[key][list[key].length - 5]["c"]) /
       5;
-    console.log(ma5);
-    let rsi6 = this.rsi.getRSI6(list[key]);
+    let res = this.rsi.getRSI6(list[key]);
+
     let william9 = this.williams.getWilliams(
-      list[key].filter(
-        (item, index) =>
-          index >= list[key].length - 10 && index <= list[key].length - 2
+      res.filter(
+        (item, index) => index >= res.length - 10 && index <= res.length - 2
       )
     );
     let william18 = this.williams.getWilliams(
-      list[key].filter(
-        (item, index) =>
-          index >= list[key].length - 19 && index <= list[key].length - 2
+      res.filter(
+        (item, index) => index >= res.length - 19 && index <= res.length - 2
       )
     );
 
+    let response = res[res.length - 1];
     if (
-      rsi6[rsi6.length - 1]["rsi6"] > rsi6[rsi6.length - 2]["rsi6"] &&
+      response["rsi6"] > res[res.length - 2]["rsi6"] &&
       (william9 < -80 || william18 < -80) &&
-      list[key][list[key].length - 1]["c"] > ma5
+      response["c"] > ma5
     ) {
-      return list[key][list[key].length - 1];
+      /* 
+        custom提供驗證訊息
+      */
+      response["custom"] = {
+        ...response,
+        william9,
+        william18,
+        method: 2,
+        class: "buy",
+      };
+      response.status = true;
     } else {
-      return false;
+      response.status = false;
     }
+    return response;
   }
 }
 module.exports = BuyMethod;

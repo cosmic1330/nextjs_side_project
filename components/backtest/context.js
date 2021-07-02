@@ -40,7 +40,7 @@ class Context {
     let handle = this.stock.get();
     Object.keys(list).forEach((key) => {
       //  設定買進方式-------------------------------------------------
-      let response = this.buyMethod.method2(list, key);
+      let response = this.buyMethod.method1(list, key);
       //  ------------------------------------------------------------
       // // 符合標準就買入
       if (
@@ -48,14 +48,22 @@ class Context {
         !handle.hasOwnProperty(key) &&
         response["o"] < this.hightStockPrice
       ) {
-        if (response) {
+        if (response.status) {
           let buy = this.transaction.getBuyPrice(response["o"]); // 買進價格
           let inDate = response["t"]; // 買進日期
           let count = 1000; // 買進張數
           let inPrice = response["o"]; // 買進股價
           let name = response["name"]; // 股票名稱;
           let id = key; // 股票代號;
-          let detail = { buy, inDate, count, inPrice, name, id };
+          let detail = {
+            buy,
+            inDate,
+            count,
+            inPrice,
+            name,
+            id,
+            custom: response.custom,
+          };
           this.stock.save(key, detail);
 
           // 扣錢
@@ -74,7 +82,7 @@ class Context {
     let handle = this.stock.get();
     Object.keys(handle).forEach((key) => {
       //  設定賣出方式-------------------------------------------------
-      let response = this.sellMethod.method2(list, key);
+      let response = this.sellMethod.method1(list, key);
       //  ------------------------------------------------------------
       if (
         handle[key]["buy"] - handle[key]["buy"] * this.hightLoss >
@@ -95,7 +103,7 @@ class Context {
         let outDate = response["t"]; // 賣出日期
         let outPrice = response["l"]; // 賣出股價
         let profit = sell - handle[key]["buy"]; // 損益
-        let detail = { ...handle[key], outDate, outPrice, sell, profit };
+        let detail = { ...handle[key], outDate, outPrice, sell, profit, custom: response.custom, };
         // 計算輸贏
         this.capital += sell;
         if (profit > 0) {

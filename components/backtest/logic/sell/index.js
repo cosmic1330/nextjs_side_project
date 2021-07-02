@@ -39,11 +39,23 @@ class SellMethod {
 
     let response = list[key][list[key].length - 1];
     if (
-      william9 < -20 &&
-      william18 < -20 &&
-      beforeWilliam9 > -20 &&
-      beforeWilliam18 > -20
+      william9 > -20 &&
+      william18 > -20 &&
+      beforeWilliam9 < -20 &&
+      beforeWilliam18 < -20
     ) {
+      /* 
+        custom提供驗證訊息
+      */
+      response.custom = {
+        ...response,
+        william9,
+        beforeWilliam9,
+        william18,
+        beforeWilliam18,
+        method: 1,
+        class: "sell",
+      };
       response.status = true;
     } else {
       response.status = false;
@@ -71,6 +83,16 @@ class SellMethod {
 
     let response = list[key][list[key].length - 1];
     if (william9 > -20 && william18 > -20) {
+      /* 
+        custom提供驗證訊息
+      */
+      response["custom"] = {
+        ...response,
+        william9,
+        william18,
+        method: 2,
+        class: "sell",
+      };
       response.status = true;
     } else {
       response.status = false;

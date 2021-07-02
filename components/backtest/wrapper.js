@@ -61,7 +61,7 @@ class Wrapper {
 
   history() {
     let data = this.context.stock.getHistory();
-    // console.log(data);
+    console.log(data);
     return data;
   }
 }

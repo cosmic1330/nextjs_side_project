@@ -14,4 +14,4 @@ let date = new Date({
 const wrapper = new Wrapper({date, hightLoss:0.15, capital:300000, handlingFeeRebate:0.28, limitHandlingFee:1});
 wrapper.run();
 wrapper.show(true);
-// wrapper.history();
+wrapper.history();
