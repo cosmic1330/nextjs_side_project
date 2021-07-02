@@ -78,7 +78,9 @@ export default function ListComponent({ item }) {
           最低手續費:${item.limitHandlingFee},<br />
           手續費折扣:{item.handlingFeeRebate * 100}%,
           <br />
-          測試檔案:{item.fileName}
+          股價限制低於:${item.hightStockPrice}
+          <br />
+          測試檔案: {item.fileName}
         </div>
       </div>
       <div className="response">

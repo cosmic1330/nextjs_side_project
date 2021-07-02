@@ -216,6 +216,7 @@ export default function Stock({ list }) {
           handlingFeeRebate: 0.65,
           capital: 300000,
           fileName: "20210701.json",
+          hightStockPrice: 100,
         }}
         render={({ handleSubmit }) => (
           <main className={style.main}>
@@ -355,6 +356,29 @@ export default function Stock({ list }) {
                 {({ input, meta }) => (
                   <TextField
                     label="最高虧損(%)"
+                    classes={style.textField}
+                    size="small"
+                    variant="filled"
+                    onChange={input.onChange}
+                    value={input.value}
+                    InputProps={{
+                      className: css`
+                        color: #505050;
+                        &:hover::before {
+                          border-color: transparent;
+                        }
+                        &::after {
+                          border-color: #fff;
+                        }
+                      `,
+                    }}
+                  />
+                )}
+              </Field>
+              <Field name="hightStockPrice">
+                {({ input, meta }) => (
+                  <TextField
+                    label="買進股價低於"
                     classes={style.textField}
                     size="small"
                     variant="filled"

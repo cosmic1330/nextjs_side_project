@@ -9,6 +9,7 @@ class Context {
     hightLoss = 0.1,
     handlingFeeRebate = 0.65,
     limitHandlingFee = 20,
+    hightStockPrice = 150,
   }) {
     this.capital = capital;
     this.stock = new Stock();
@@ -18,6 +19,7 @@ class Context {
     this.subject = subject;
     this.subject.attach(this);
     this.hightLoss = hightLoss;
+    this.hightStockPrice = hightStockPrice;
     this.win = 0;
     this.lose = 0;
     this.profit = 0;
@@ -44,7 +46,7 @@ class Context {
       if (
         this.capital > 0 &&
         !handle.hasOwnProperty(key) &&
-        response["o"] < 150
+        response["o"] < this.hightStockPrice
       ) {
         if (response) {
           let buy = this.transaction.getBuyPrice(response["o"]); // 買進價格
