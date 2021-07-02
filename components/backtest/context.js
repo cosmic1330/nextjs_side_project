@@ -78,11 +78,11 @@ class Context {
       //  ------------------------------------------------------------
       if (
         handle[key]["buy"] - handle[key]["buy"] * this.hightLoss >
-        handle[key]["count"] * response["c"] // 虧損大於設定:賣出
+        handle[key]["count"] * response["l"] // 虧損大於設定:賣出
       ) {
-        let sell = this.transaction.getSellPrice(response["c"]); // 賣出價格
+        let sell = this.transaction.getSellPrice(response["l"]); // 賣出價格
         let outDate = response["t"]; // 賣出日期
-        let outPrice = response["c"]; // 賣出股價
+        let outPrice = response["l"]; // 賣出股價
         let profit = sell - handle[key]["buy"]; // 損益
         let detail = { ...handle[key], outDate, outPrice, sell, profit };
         // 計算輸贏
@@ -90,10 +90,10 @@ class Context {
         this.lose += 1;
         this.profit += profit;
         this.stock.remove(key, detail);
-      } else if (response.status && response["c"] > handle[key]["inPrice"]) {
-        let sell = this.transaction.getSellPrice(response["c"]); // 賣出價格
+      } else if (response.status && response["l"] > handle[key]["inPrice"]) {
+        let sell = this.transaction.getSellPrice(response["l"]); // 賣出價格
         let outDate = response["t"]; // 賣出日期
-        let outPrice = response["c"]; // 賣出股價
+        let outPrice = response["l"]; // 賣出股價
         let profit = sell - handle[key]["buy"]; // 損益
         let detail = { ...handle[key], outDate, outPrice, sell, profit };
         // 計算輸贏

@@ -40,7 +40,7 @@ class Wrapper {
     let profit = profitArr.reduce(reducer);
     let obj = {
       進出點:
-        "符合昨日技術分析，以今日開盤價買進。 符合賣出條件，以今日收盤價賣出",
+        "符合昨日技術分析，以今日開盤價買進。 符合賣出條件，以今日最低價賣出",
       本金: this.context.capital,
       損益: this.context.profit,
       Win: this.context.win,

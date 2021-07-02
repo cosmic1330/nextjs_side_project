@@ -53,7 +53,16 @@ class BuyMethod {
       買進:
         今日 rsi6 高於 昨日rsi6
         昨日 william9 低於-80 && william18 低於-80
+        收盤價高於ma5
     */
+    let ma5 =
+      (list[key][list[key].length - 1]["c"] +
+        list[key][list[key].length - 2]["c"] +
+        list[key][list[key].length - 3]["c"] +
+        list[key][list[key].length - 4]["c"] +
+        list[key][list[key].length - 5]["c"]) /
+      5;
+    console.log(ma5);
     let rsi6 = this.rsi.getRSI6(list[key]);
     let william9 = this.williams.getWilliams(
       list[key].filter(
@@ -70,7 +79,8 @@ class BuyMethod {
 
     if (
       rsi6[rsi6.length - 1]["rsi6"] > rsi6[rsi6.length - 2]["rsi6"] &&
-      (william9 < -80 || william18 < -80)
+      (william9 < -80 || william18 < -80) &&
+      list[key][list[key].length - 1]["c"] > ma5
     ) {
       return list[key][list[key].length - 1];
     } else {

@@ -212,7 +212,7 @@ export default function Stock({ list }) {
         onSubmit={onSubmit}
         initialValues={{
           limitHandlingFee: 20,
-          hightLoss: 0.1,
+          hightLoss: 0.15,
           handlingFeeRebate: 0.65,
           capital: 300000,
           fileName: "20210701.json",
