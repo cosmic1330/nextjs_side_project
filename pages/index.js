@@ -15,7 +15,10 @@ export default function Home() {
           ToDoList
         </button>
         <button onClick={() => router.push('/stock')}>
-          股票
+          回測系統
+        </button>
+        <button onClick={() => router.push('/selectstock')}>
+          選股
         </button>
         <button onClick={() => router.push('/db/mysqlTest')}>
           DB-mysqlTest
