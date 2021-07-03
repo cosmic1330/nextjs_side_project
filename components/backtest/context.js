@@ -39,10 +39,12 @@ class Context {
     let list = this.subject.getList();
     let handle = this.stock.get();
     Object.keys(list).forEach((key) => {
+
       //  設定買進方式-------------------------------------------------
       let response = this.buyMethod.method1(list, key);
       //  ------------------------------------------------------------
-      // // 符合標準就買入
+
+      // 買進邏輯處理 + 紀錄訊息處理
       if (
         this.capital > 0 &&
         !handle.hasOwnProperty(key) &&
@@ -53,8 +55,9 @@ class Context {
           let inDate = response["t"]; // 買進日期
           let count = 1000; // 買進張數
           let inPrice = response["o"]; // 買進股價
-          let name = response["name"]; // 股票名稱;
-          let id = key; // 股票代號;
+          let name = response["name"]; // 股票名稱
+          let id = key; // 股票代號
+          let verification = response["custom"]; // 客製化驗證訊息
           let detail = {
             buy,
             inDate,
@@ -62,7 +65,7 @@ class Context {
             inPrice,
             name,
             id,
-            custom: response.custom,
+            verification,
           };
           this.stock.save(key, detail);
 
@@ -81,9 +84,12 @@ class Context {
     let list = this.subject.getList();
     let handle = this.stock.get();
     Object.keys(handle).forEach((key) => {
+
       //  設定賣出方式-------------------------------------------------
       let response = this.sellMethod.method1(list, key);
       //  ------------------------------------------------------------
+
+      // 賣出邏輯處理 + 紀錄訊息處理
       if (
         handle[key]["buy"] - handle[key]["buy"] * this.hightLoss >
         handle[key]["count"] * response["l"] // 虧損大於設定:賣出
@@ -92,8 +98,16 @@ class Context {
         let outDate = response["t"]; // 賣出日期
         let outPrice = response["l"]; // 賣出股價
         let profit = sell - handle[key]["buy"]; // 損益
-        let detail = { ...handle[key], outDate, outPrice, sell, profit };
-        // 計算輸贏
+        let verification = "達到最高虧損限制"; // 客製化驗證訊息
+        let detail = {
+          ...handle[key],
+          outDate,
+          outPrice,
+          sell,
+          profit,
+          verification,
+        };
+
         this.capital += sell;
         this.lose += 1;
         this.profit += profit;
@@ -103,7 +117,16 @@ class Context {
         let outDate = response["t"]; // 賣出日期
         let outPrice = response["l"]; // 賣出股價
         let profit = sell - handle[key]["buy"]; // 損益
-        let detail = { ...handle[key], outDate, outPrice, sell, profit, custom: response.custom, };
+        let verification = response["custom"]; // 客製化驗證訊息
+        let detail = {
+          ...handle[key],
+          outDate,
+          outPrice,
+          sell,
+          profit,
+          verification,
+        };
+
         // 計算輸贏
         this.capital += sell;
         if (profit > 0) {

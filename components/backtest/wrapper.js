@@ -36,8 +36,11 @@ class Wrapper {
       return response;
     });
     // 損益陣列相加
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    let profit = profitArr.reduce(reducer);
+    let profit = 0;
+    if (profitArr.length > 0) {
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      profit = profitArr.reduce(reducer);
+    }
     let obj = {
       進出點:
         "符合昨日技術分析，以今日開盤價買進。 符合賣出條件，以今日最低價賣出",
@@ -55,13 +58,13 @@ class Wrapper {
     if (detail) {
       obj["目前持股"] = data;
     }
-    // console.log(obj);
+    console.log(obj);
     return obj;
   }
 
   history() {
     let data = this.context.stock.getHistory();
-    console.log(data);
+    // console.log(data);
     return data;
   }
 }

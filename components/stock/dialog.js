@@ -39,11 +39,15 @@ export default function DialogComponent({ list }) {
       <Dialog onClose={handleClose} open={open}>
         <DialogTitle>已上傳的測試資料</DialogTitle>
         <main className={style.main}>
-          <RadioGroup value={input.value} onChange={input.onChange} type="radio">
+          <RadioGroup
+            value={input.value}
+            onChange={input.onChange}
+            type="radio"
+          >
             {list.map((item) => {
               return (
                 <FormControlLabel
-                
+                  key={item}
                   value={item}
                   control={<Radio />}
                   label={item}
@@ -52,11 +56,7 @@ export default function DialogComponent({ list }) {
             })}
           </RadioGroup>
         </main>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={handleClose}
-        >
+        <Button variant="text" color="primary" onClick={handleClose}>
           確定
         </Button>
       </Dialog>

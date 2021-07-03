@@ -72,51 +72,52 @@ export default function ListComponent({ item }) {
       <div className="request">
         <img src={`../images/stock/${image[0]}-${image[1]}.png`} />
         <div className="inner">
-          本金:${item.capital},<br />
-          最高虧損:{item.hightLoss * 100}%,
+          本金:${item.request.capital},<br />
+          最高虧損:{item.request.hightLoss * 100}%,
           <br />
-          最低手續費:${item.limitHandlingFee},<br />
-          手續費折扣:{item.handlingFeeRebate * 100}%,
+          最低手續費:${item.request.limitHandlingFee},<br />
+          手續費折扣:{item.request.handlingFeeRebate * 100}%,
           <br />
-          股價限制低於:${item.hightStockPrice}
+          股價限制低於:${item.request.hightStockPrice}
           <br />
-          測試檔案: {item.fileName}
+          測試檔案: {item.request.fileName}
         </div>
       </div>
       <div className="response">
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem>本金：{item["本金"]}</ListItem>
-          <ListItem>損益：{item["損益"]}</ListItem>
+          <ListItem>本金：{item.data["本金"]}</ListItem>
+          <ListItem>損益：{item.data["損益"]}</ListItem>
           <ListItem>
-            勝率：{item["勝率"]} ( Win: {item["Win"]} ) / ( Lose: {item["Lose"]}{" "}
-            )
+            勝率：{item.data["勝率"]} ( Win: {item.data["Win"]} ) / ( Lose:{" "}
+            {item.data["Lose"]} )
           </ListItem>
-          <ListItem>未實現損益：{item["未實現損益"]}</ListItem>
+          <ListItem>未實現損益：{item.data["未實現損益"]}</ListItem>
           <ListItem>
             進出點：
             <br />
-            {item["進出點"]}
+            {item.data["進出點"]}
           </ListItem>
           <ListItem>
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                目前持股 ({Object.keys(item["目前持股"]).length})
+                目前持股 ({Object.keys(item.data["目前持股"]).length})
               </AccordionSummary>
-              {Object.keys(item["目前持股"]).map((element) => (
-                <AccordionDetails>
+              {Object.keys(item.data["目前持股"]).map((element, index) => (
+                <AccordionDetails key={index}>
                   <Typography>
-                    股票：{item["目前持股"][element]["id"]}{" "}
-                    {item["目前持股"][element]["name"]}
+                    股票：{item.data["目前持股"][element]["id"]}{" "}
+                    {item.data["目前持股"][element]["name"]}
                     <br />
-                    買進價錢：{item["目前持股"][element]["buy"]}
+                    買進價錢：{item.data["目前持股"][element]["buy"]}
                     <br />
-                    買進日期：{item["目前持股"][element]["inDate"]}
+                    買進日期：{item.data["目前持股"][element]["inDate"]}
                     <br />
-                    買進股數：{item["目前持股"][element]["count"]}
+                    買進股數：{item.data["目前持股"][element]["count"]}
                     <br />
                     買進股價 / 現價：{
-                      item["目前持股"][element]["inPrice"]
-                    } / {item["目前持股"][element]["nowPrice"]}
+                      item.data["目前持股"][element]["inPrice"]
+                    }{" "}
+                    / {item.data["目前持股"][element]["nowPrice"]}
                   </Typography>
                 </AccordionDetails>
               ))}

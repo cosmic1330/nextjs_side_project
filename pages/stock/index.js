@@ -135,7 +135,8 @@ export default function Stock({ list }) {
     if (response) {
       setSnackBarText("新增一筆測試結果");
       setOpenSnackBar(true);
-      response = { ...data,...response};
+      response = { request: data, ...response };
+      console.log(response);
       setTestList((pre) => [...pre, response]);
     }
     setLoading(false);
@@ -150,6 +151,22 @@ export default function Stock({ list }) {
       setOpenSnackBar(true);
     }
     setLoading(false);
+  };
+
+  const saveSingleTestData = async () => {
+    var code = prompt("請輸入股票代號");
+    if (code) {
+      setLoading(true);
+      const res = await fetch(
+        `http://localhost:3000/api/stock/saveSingleStockTestData?code=${code}`
+      );
+      const response = await res.json();
+      if (response) {
+        setSnackBarText(`已建立${code}測試資料`);
+        setOpenSnackBar(true);
+      }
+      setLoading(false);
+    }
   };
 
   const readFile = (file) => {
@@ -192,7 +209,7 @@ export default function Stock({ list }) {
       {/* snack bar */}
       <Snackbar
         open={openSnackBar}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={() => setOpenSnackBar(false)}
       >
         <MuiAlert
@@ -227,6 +244,13 @@ export default function Stock({ list }) {
                 variant="outlined"
               >
                 取得今日資料
+              </Button>
+              <Button
+                onClick={saveSingleTestData}
+                classes={style.outlinedButton}
+                variant="outlined"
+              >
+                取得個股資料
               </Button>
               <Button
                 onClick={handleClick}
@@ -404,7 +428,7 @@ export default function Stock({ list }) {
       />
       <div className="testListBox">
         {testList.map((item) => (
-          <List {...{item}}/>
+          <List {...{ item }} />
         ))}
       </div>
     </div>

@@ -10,13 +10,14 @@
 5. 當收盤股價(價格-手續費-0.3%證交稅)低於買進股價(價格+手續費)時不賣出。
 6. 當股價虧損超過10%則賣出。
 
+> Please use node@16.0.0  
+> nodejs execute python web crawler  
 > Used OOP develope  
 > Design Pattern: 
 > - wrapper pattern, 
 > - observer pattern, 
 > - factory method pattern, 
-> - state pattern
-> Please use node@16.0.0
+> - state pattern  
 
 
 example:
@@ -38,7 +39,7 @@ date               | Require |                        | (迴歸)資料日期系�
 hightLoss          | Number  |                    0.1 | 虧損超過%數
 handlingFeeRebate  | Number  |                   0.65 | 手續費折扣
 limitHandlingFee   | Number  |                     20 | 最低手續費
-
+hightStockPrice    | Number  |                    150 | 限制購買低於此股價的股票
 ----------------
 
 <br/>
@@ -61,6 +62,7 @@ subject            | Object |    Date | (迴歸)資料日期系統
 hightLoss          | Number |     0.1 | 虧損超過%數
 handlingFeeRebate  | Number |    0.65 | 手續費折扣
 limitHandlingFee   | Number |      20 | 最低手續費
+hightStockPrice    | Number |     150 | 限制購買低於此股價的股票
 
 <br/>
 

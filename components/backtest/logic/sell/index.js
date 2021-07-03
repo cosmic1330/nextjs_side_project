@@ -66,7 +66,7 @@ class SellMethod {
   method2(list, key) {
     /* 
        賣出:
-          今日 william9 高於-10 && william18 高於-20
+          今日 william9 高於-20 && william18 高於-20
     */
     let william9 = this.williams.getWilliams(
       list[key].filter(
