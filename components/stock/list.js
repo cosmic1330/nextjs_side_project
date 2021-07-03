@@ -7,48 +7,61 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-const style = css`
-  padding: 20px;
-  margin: auto;
-  margin-top: 50px;
-  border-radius: 21px;
-  width: 75%;
-  background-color: #655c5c;
-  display: flex;
-  align-items: flex-start;
-  flex-shrink: 0;
-  .request {
+import IconButton from "@material-ui/core/IconButton";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import Tooltip from "@material-ui/core/Tooltip";
+import { createCSV, uuid } from "../../utils";
+const style = {
+  layout: css`
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 21px;
+    background-color: #655c5c;
     display: flex;
-    gap: 20px;
-    img {
-      width: 50px;
-      height: 50px;
-    }
-    .inner {
-      padding: 10px;
-      background-color: #524a4a;
-      border-radius: 10px;
-      word-break: break-word;
-      color: #fff;
-      word-spacing: 10px;
-      letter-spacing: 0.2rem;
-      position: relative;
-      &:before {
-        content: "";
-        position: absolute;
-        left: -14px;
-        top: 20px;
-        border-width: 8px;
-        border-style: solid;
-        border-color: transparent #524a4a transparent transparent;
+    align-items: flex-start;
+    flex-shrink: 0;
+    position: relative;
+    .request {
+      display: flex;
+      gap: 20px;
+      img {
+        width: 50px;
+        height: 50px;
+      }
+      .inner {
+        padding: 10px;
+        background-color: #524a4a;
+        border-radius: 10px;
+        word-break: break-word;
+        color: #fff;
+        word-spacing: 10px;
+        letter-spacing: 0.2rem;
+        position: relative;
+        &:before {
+          content: "";
+          position: absolute;
+          left: -14px;
+          top: 20px;
+          border-width: 8px;
+          border-style: solid;
+          border-color: transparent #524a4a transparent transparent;
+        }
       }
     }
-  }
-  .response {
-    width: 56%;
-    color: #fff;
-  }
-`;
+    .response {
+      width: 56%;
+      color: #fff;
+    }
+  `,
+  iconBtn: {
+    root: css`
+      position: absolute;
+      color: #fff;
+      right: 20px;
+      z-index: 1;
+    `,
+  },
+};
 export default function ListComponent({ item }) {
   const [image, setImage] = useState(["dog", 1]);
   const random = () => {
@@ -61,6 +74,30 @@ export default function ListComponent({ item }) {
     return animal[data];
   };
 
+  const exportHistory = () => {
+    let list = item.history.map((element) => {
+      let obj = [
+        element.id,
+        element.name,
+        element.inPrice,
+        element.outPrice,
+        element.inDate,
+        element.outDate,
+        element.buy,
+        element.sell,
+        element.profit,
+        element.nowPrice,
+        JSON.stringify(element.verification),
+      ].join(",");
+      return obj;
+    });
+    let header =
+      "股票代號,股票名稱,買入股價,賣出股價,買入時間,買出時間,買入價格,賣出價格,損益,目前價格,verification\n";
+    let content = list.join("\n");
+    let fileName = uuid();
+    createCSV(fileName, header + content);
+  };
+
   useEffect(() => {
     let animal = randomAnimal();
     let index = random();
@@ -68,7 +105,12 @@ export default function ListComponent({ item }) {
   }, [item]);
 
   return (
-    <div className={style}>
+    <div className={style.layout}>
+      <Tooltip title="匯出歷史訊息.csv">
+        <IconButton classes={style.iconBtn} onClick={exportHistory}>
+          <OpenInNewIcon />
+        </IconButton>
+      </Tooltip>
       <div className="request">
         <img src={`../images/stock/${image[0]}-${image[1]}.png`} />
         <div className="inner">

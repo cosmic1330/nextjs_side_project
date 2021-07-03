@@ -24,6 +24,6 @@ export default async (req, res) => {
   });
   wrapper.run();
   let data = wrapper.show(true);
-  let hirstory = wrapper.history();
-  res.status(200).json({ data, hirstory });
+  let history = wrapper.history();
+  res.status(200).json({ data, history });
 };

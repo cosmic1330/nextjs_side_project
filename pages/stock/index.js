@@ -9,6 +9,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import { createCSV } from "../../utils";
 const style = {
   body: css`
     min-height: 100vh;
@@ -25,6 +27,12 @@ const style = {
       font-size: 24px;
       margin: 0;
     }
+  `,
+  testListBox: css`
+    position: relative;
+    margin: auto;
+    margin-top: 30px;
+    width: 75%;
   `,
   main: css`
     padding: 20px;
@@ -84,6 +92,15 @@ const style = {
       }
     }
   `,
+  exportBtn: {
+    root: css`
+      color: #fff;
+      background-color: #00afee;
+      &:hover {
+        background-color: #00afee;
+      }
+    `,
+  },
   outlinedButton: {
     root: css`
       color: #fff;
@@ -136,7 +153,6 @@ export default function Stock({ list }) {
       setSnackBarText("新增一筆測試結果");
       setOpenSnackBar(true);
       response = { request: data, ...response };
-      console.log(response);
       setTestList((pre) => [...pre, response]);
     }
     setLoading(false);
@@ -167,6 +183,25 @@ export default function Stock({ list }) {
       }
       setLoading(false);
     }
+  };
+
+  const exportTestResult = () => {
+    console.log(testList);
+    let list = testList.map((element) => {
+      let obj = [
+        element.data["本金"],
+        element.data["損益"],
+        element.data["未實現損益"],
+        element.data["勝率"],
+        element.data["Win"],
+        element.data["Lose"],
+        Object.keys(element.data["目前持股"]).length,
+      ].join(",");
+      return obj;
+    });
+    let header = "剩餘本金,損益,未實現損益,勝率,Win,Lose,目前持股數\n";
+    let content = list.join("\n");
+    createCSV("result", header + content);
   };
 
   const readFile = (file) => {
@@ -426,7 +461,17 @@ export default function Stock({ list }) {
           </main>
         )}
       />
-      <div className="testListBox">
+      <div className={style.testListBox}>
+        {testList.length > 0 && (
+          <Button
+            variant="contained"
+            classes={style.exportBtn}
+            startIcon={<OpenInNewIcon />}
+            onClick={exportTestResult}
+          >
+            匯出測試結果
+          </Button>
+        )}
         {testList.map((item) => (
           <List {...{ item }} />
         ))}

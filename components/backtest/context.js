@@ -31,6 +31,7 @@ class Context {
         股價超過150忽略
         沒有本金忽略
         已買過的忽略
+        昨日交易量超過 1000
 
       其次：
         符合邏輯買進
@@ -39,7 +40,6 @@ class Context {
     let list = this.subject.getList();
     let handle = this.stock.get();
     Object.keys(list).forEach((key) => {
-
       //  設定買進方式-------------------------------------------------
       let response = this.buyMethod.method1(list, key);
       //  ------------------------------------------------------------
@@ -48,7 +48,8 @@ class Context {
       if (
         this.capital > 0 &&
         !handle.hasOwnProperty(key) &&
-        response["o"] < this.hightStockPrice
+        response["o"] < this.hightStockPrice &&
+        list[key][list[key].length - 2]["v"] > 1000
       ) {
         if (response.status) {
           let buy = this.transaction.getBuyPrice(response["o"]); // 買進價格
@@ -84,7 +85,6 @@ class Context {
     let list = this.subject.getList();
     let handle = this.stock.get();
     Object.keys(handle).forEach((key) => {
-
       //  設定賣出方式-------------------------------------------------
       let response = this.sellMethod.method1(list, key);
       //  ------------------------------------------------------------
