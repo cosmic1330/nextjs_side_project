@@ -220,7 +220,12 @@ export default function Stock({ list }) {
         let validation = { format: false, length: false, name: file.name };
         let jsonData = JSON.parse(this.result);
         // 驗證格式
-        if (jsonData?.["1101"] && Array.isArray(jsonData?.["1101"])) {
+        if (
+          typeof jsonData == "object" &&
+          !jsonData.hasOwnProperty("length") &&
+          (Array.isArray(jsonData?.["1101"]) ||
+            Array.isArray(jsonData?.[file.name.replace(".json", "")]))
+        ) {
           validation.format = true;
         }
 
@@ -232,9 +237,7 @@ export default function Stock({ list }) {
           [...new Set(lengthArr)].length === 1
             ? lengthArr[0]
             : [...new Set(lengthArr)];
-        if (!Array.isArray(length)) {
-          validation.length = true;
-        }
+        validation.length = length;
 
         setPreview(validation);
       };
@@ -334,7 +337,7 @@ export default function Stock({ list }) {
                     <p>格式：{preview?.format ? "正確" : "格式錯誤"}</p>
                   )}
                   {preview && (
-                    <p>資料長度：{preview?.length ? "一致" : "不一致"}</p>
+                    <p>資料長度：{JSON.stringify(preview?.length)}</p>
                   )}
                 </pre>
               </div>
