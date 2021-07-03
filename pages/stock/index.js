@@ -186,7 +186,6 @@ export default function Stock({ list }) {
   };
 
   const exportTestResult = () => {
-    console.log(testList);
     let list = testList.map((element) => {
       let obj = [
         element.data["本金"],
@@ -196,10 +195,19 @@ export default function Stock({ list }) {
         element.data["Win"],
         element.data["Lose"],
         Object.keys(element.data["目前持股"]).length,
+        [
+          "$" + element.request.capital,
+          "$" + element.request.hightStockPrice,
+          element.request.hightLoss * 100 + "%",
+          element.request.handlingFeeRebate * 100 + "%",
+          "$" + element.request.limitHandlingFee,
+          element.request.fileName,
+        ].join("、"),
       ].join(",");
       return obj;
     });
-    let header = "剩餘本金,損益,未實現損益,勝率,Win,Lose,目前持股數\n";
+    let header =
+      "剩餘本金,損益,未實現損益,勝率,Win,Lose,目前持股數,設定(本金 | 限制股價 | 最高虧損 | 手續費折扣 | 最低手續費 | 測試資料)\n";
     let content = list.join("\n");
     createCSV("result", header + content);
   };
