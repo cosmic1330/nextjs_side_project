@@ -58,7 +58,7 @@ class Wrapper {
     if (detail) {
       obj["目前持股"] = data;
     }
-    console.log(obj);
+    // console.log(obj);
     return obj;
   }
 

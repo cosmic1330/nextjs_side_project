@@ -483,8 +483,8 @@ export default function Stock({ list }) {
             匯出測試結果
           </Button>
         )}
-        {testList.map((item) => (
-          <List {...{ item }} />
+        {testList.map((item, index) => (
+          <List {...{ item }} key={index} />
         ))}
       </div>
     </div>

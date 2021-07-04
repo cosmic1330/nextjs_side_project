@@ -41,7 +41,7 @@ class Context {
     let handle = this.stock.get();
     Object.keys(list).forEach((key) => {
       //  設定買進方式-------------------------------------------------
-      let response = this.buyMethod.method2(list, key);
+      let response = this.buyMethod.method3(list, key);
       //  ------------------------------------------------------------
 
       // 買進邏輯處理 + 紀錄訊息處理
@@ -58,6 +58,8 @@ class Context {
           let inPrice = response["o"]; // 買進股價
           let name = response["name"]; // 股票名稱
           let id = key; // 股票代號
+          let pressure = response["pressure"]; // 壓力
+          let shore = response["shore"]; // 支撐
           let verification = response["custom"]; // 客製化驗證訊息
           let detail = {
             buy,
@@ -66,6 +68,8 @@ class Context {
             inPrice,
             name,
             id,
+            pressure,
+            shore,
             verification,
           };
           this.stock.save(key, detail);

@@ -22,7 +22,7 @@ class RSI {
             $beforeUpAvg = $beforeUpAvg * 5 / 6 + ($minusU)/6;
             $beforeDownAvg = $beforeDownAvg * 5 / 6 + (Math.abs($minusD))/6;
             let $rsi6 = this.getRSI($beforeUpAvg,$beforeDownAvg);
-            $list[$i]['rsi6'] = Math.round($rsi6);
+            $list[$i]['rsi6'] = Math.round($rsi6*100)/100;
         }
         return $list;
     }
