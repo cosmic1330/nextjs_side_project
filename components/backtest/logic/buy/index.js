@@ -144,6 +144,9 @@ class BuyMethod {
         date: ma[ma.length - 2]["t"],
         ma5: ma[ma.length - 2]["ma5"],
         ma20: ma[ma.length - 2]["ma20"],
+        ma25: ma[ma.length - 2]["ma25"],
+        UB: ma[ma.length - 2]["UB"],
+        LB: ma[ma.length - 2]["LB"],
         gold: gold,
       };
       response = this.filterData(response, 3, list[key]);
