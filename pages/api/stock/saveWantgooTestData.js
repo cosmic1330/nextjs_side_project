@@ -8,7 +8,7 @@ export default async (req, res) => {
     "utf8"
   );
   let jsonFile = JSON.parse(rawdata);
-
+  let err = [];
   // 撰寫格式
   let obj = {};
   try {
@@ -17,15 +17,18 @@ export default async (req, res) => {
       let main = await getMain(element);
       // 如果沒有資料就跳過
       if (main.length < 1) {
+        err.push(element);
         continue;
       }
       let mainLastTime = main[main.length - 1]["date"];
       let price = await getPrice(element, mainLastTime);
       if (price.length < 1) {
+        err.push(element);
         continue;
       }
       let investors = await getInvestors(element, price.length);
       if (investors.length < 1) {
+        err.push(element);
         continue;
       }
       let yahooData = await getName(element);
@@ -39,7 +42,7 @@ export default async (req, res) => {
           main[e]["date"] != date ||
           price[e]["time"] != date
         ) {
-          arr = "時間戳不同";
+          err.push(element);
           break;
         }
 
@@ -63,7 +66,9 @@ export default async (req, res) => {
         };
         arr.push(data);
       }
-      obj[element] = arr;
+      if (arr.length > 0) {
+        obj[element] = arr;
+      }
     }
   } catch (error) {
     res.status(403).json("error");
@@ -87,6 +92,7 @@ export default async (req, res) => {
       }
     }
   );
+  console.log(err);
   res.status(200).json("finish");
 };
 

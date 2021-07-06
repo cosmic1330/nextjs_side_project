@@ -13,17 +13,17 @@ async function run() {
     console.log(element);
     let main = await getMain(element);
     // 如果沒有資料就跳過
-    if(main.length<1){
-      continue ;
+    if (main.length < 1) {
+      continue;
     }
     let mainLastTime = main[main.length - 1]["date"];
     let price = await getPrice(element, mainLastTime);
-    if(price.length<1){
-      continue ;
+    if (price.length < 1) {
+      continue;
     }
     let investors = await getInvestors(element, price.length);
-    if(investors.length<1){
-      continue ;
+    if (investors.length < 1) {
+      continue;
     }
     let yahooData = await getName(element);
 
@@ -36,7 +36,6 @@ async function run() {
         main[e]["date"] != date ||
         price[e]["time"] != date
       ) {
-        arr = "時間戳不同";
         break;
       }
 
@@ -60,7 +59,9 @@ async function run() {
       };
       arr.push(data);
     }
-    obj[element] = arr;
+    if (arr.length > 0) {
+      obj[element] = arr;
+    }
   }
 
   // 寫入檔案

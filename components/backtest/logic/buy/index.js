@@ -2,8 +2,8 @@ const Williams = require("../../skill/williams");
 const RSI = require("../../skill/rsi");
 const MA = require("../../skill/ma");
 const Gold = require("../../skill/gold");
-const { waveLow, waveHight } = require("../../../../utils/index");
-let request = require("request");
+const waveLow= require("../../utils/waveLow");
+const waveHight  = require("../../utils/waveHight");
 
 // **   注意：所有使用技術測試日期都要取昨日不可使用今日，因為買入是以今日開盤價買入   **
 class BuyMethod {
