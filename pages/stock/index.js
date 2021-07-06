@@ -238,6 +238,7 @@ export default function Stock({ list }) {
             ? lengthArr[0]
             : [...new Set(lengthArr)];
         validation.length = length;
+        validation.number = Object.keys(jsonData).length;
 
         setPreview(validation);
       };
@@ -333,6 +334,9 @@ export default function Stock({ list }) {
               <div className="previewBox">
                 <pre>
                   驗證資料：{preview ? preview.name : "空"}
+                  {preview && (
+                    <p>資料數：{preview?.number}</p>
+                  )}
                   {preview && (
                     <p>格式：{preview?.format ? "正確" : "格式錯誤"}</p>
                   )}
