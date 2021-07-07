@@ -14,6 +14,7 @@ export default async (req, res) => {
   try {
     for (let i = 0; i < jsonFile.dataList.length; i++) {
       const element = jsonFile.dataList[i];
+      console.log(element);
       let main = await getMain(element);
       // 如果沒有資料就跳過
       if (main.length < 1) {
@@ -74,8 +75,15 @@ export default async (req, res) => {
     res.status(403).json(["error"]);
   }
 
-  // 寫入檔案
+  //  過濾資料
+  let response = {};
+  Object.keys(obj).forEach((element) => {
+    if (obj[element].length === obj["1101"].length) {
+      response[element] = obj[element].reverse();
+    }
+  });
 
+  // 寫入檔案
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, "0");
   let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
@@ -83,7 +91,7 @@ export default async (req, res) => {
   let date = yyyy + mm + dd;
   fs.writeFile(
     path.join(`components/backtest/testData/${date}.json`),
-    JSON.stringify(obj),
+    JSON.stringify(response),
     function (error) {
       if (error) {
         console.log("文件寫入失敗");
