@@ -90,7 +90,7 @@ class Context {
     let handle = this.stock.get();
     Object.keys(handle).forEach((key) => {
       //  設定賣出方式-------------------------------------------------
-      let response = this.sellMethod.method1(list, key);
+      let response = this.sellMethod.method3(list, key);
       //  ------------------------------------------------------------
 
       // 賣出邏輯處理 + 紀錄訊息處理

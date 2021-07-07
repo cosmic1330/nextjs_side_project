@@ -7,15 +7,68 @@ export default async (req, res) => {
 
   // 撰寫格式
   let obj = {};
-  for (let i = 0; i < jsonFile.length; i++) {
-    const element = jsonFile[i];
-    let yahooData = await getData(element);
-    if (yahooData) {
-      obj[element] = yahooData.ta.map((item) => {
-        item.name = yahooData?.mem?.name;
-        return item;
-      });
+  let err = [];
+  try {
+    for (let i = 0; i < jsonFile.length; i++) {
+      const element = jsonFile[i];
+      let main = await getMain(element);
+      // 如果沒有資料就跳過
+      if (main.length < 1) {
+        err.push(element);
+        continue;
+      }
+      let mainLastTime = main[main.length - 1]["date"];
+      let price = await getPrice(element, mainLastTime);
+      if (price.length < 1) {
+        err.push(element);
+        continue;
+      }
+      let investors = await getInvestors(element, price.length);
+      if (investors.length < 1) {
+        err.push(element);
+        continue;
+      }
+      let yahooData = await getName(element);
+
+      let arr = [];
+      for (let e = 0; e < main.length - 1; e++) {
+        let date = new Date(investors[e]?.["date"]);
+        date = Date.parse(date);
+        if (
+          main[e]["date"] != price[e]["time"] ||
+          main[e]["date"] != date ||
+          price[e]["time"] != date
+        ) {
+          err.push(element);
+          break;
+        }
+
+        //  時間戳相同
+        date = new Date(date);
+        let year = date.getFullYear();
+        let month = feedBackMonth(date.getMonth());
+        let day = feedBackDate(date.getDate());
+        let data = {
+          o: price[e]["open"],
+          t: `${year}${month}${day}`,
+          h: price[e]["high"],
+          l: price[e]["low"],
+          c: price[e]["close"],
+          v: price[e]["volume"],
+          skp5: main[e]["skp5"],
+          stockAgentMainPower: main[e]["stockAgentMainPower"],
+          sumING: investors[e]["sumING"],
+          sumForeignNoDealer: investors[e]["sumForeignNoDealer"],
+          name: yahooData?.mem?.name,
+        };
+        arr.push(data);
+      }
+      if (arr.length > 0) {
+        obj[element] = arr;
+      }
     }
+  } catch (error) {
+    res.status(403).json(["error"]);
   }
 
   // 寫入檔案
@@ -30,10 +83,85 @@ export default async (req, res) => {
       }
     }
   );
-  res.status(200).json(obj);
+  res.status(200).json(["finish"]);
 };
 
-function getData(code) {
+function getMain(code) {
+  return new Promise(function (resolve, reject) {
+    request.get(
+      {
+        url: `https://www.wantgoo.com/stock/${code}/major-investors/main-trend-data`,
+        headers: {
+          "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36",
+        },
+      },
+      (error, response, body) => {
+        if (error) reject(error);
+        try {
+          body = body.replace("(", "");
+          body = body.replace(");", "");
+          body = JSON.parse(body);
+          resolve(body);
+        } catch (error) {
+          resolve(false);
+        }
+      }
+    );
+  });
+}
+
+function getPrice(code, time) {
+  return new Promise(function (resolve, reject) {
+    request.get(
+      {
+        url: `https://www.wantgoo.com/investrue/${code}/daily-candlesticks?after=${time}`,
+        headers: {
+          "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36",
+        },
+      },
+      (error, response, body) => {
+        if (error) reject(error);
+        try {
+          body = body.replace("(", "");
+          body = body.replace(");", "");
+          body = JSON.parse(body);
+          resolve(body);
+        } catch (error) {
+          resolve(false);
+        }
+      }
+    );
+  });
+}
+
+function getInvestors(code, length) {
+  return new Promise(function (resolve, reject) {
+    request.get(
+      {
+        url: `https://www.wantgoo.com/stock/${code}/institutional-investors/trend-data?topdays=${length}`,
+        headers: {
+          "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36",
+        },
+      },
+      (error, response, body) => {
+        if (error) reject(error);
+        try {
+          body = body.replace("(", "");
+          body = body.replace(");", "");
+          body = JSON.parse(body);
+          resolve(body);
+        } catch (error) {
+          resolve(false);
+        }
+      }
+    );
+  });
+}
+
+function getName(code) {
   return new Promise(function (resolve, reject) {
     request.get(
       {
@@ -52,4 +180,60 @@ function getData(code) {
       }
     );
   });
+}
+
+function feedBackMonth(index) {
+  let monthArr = [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+  ];
+  return monthArr[index];
+}
+
+function feedBackDate(index) {
+  let dateArr = [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+  ];
+  return dateArr[index];
 }

@@ -71,7 +71,7 @@ export default async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(403).json("error");
+    res.status(403).json(["error"]);
   }
 
   // 寫入檔案
@@ -93,7 +93,7 @@ export default async (req, res) => {
     }
   );
   console.log(err);
-  res.status(200).json("finish");
+  res.status(200).json(["finish"]);
 };
 
 function getMain(code) {

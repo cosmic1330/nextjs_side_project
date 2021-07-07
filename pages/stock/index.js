@@ -160,7 +160,10 @@ export default function Stock({ list }) {
 
   const saveTodayTestData = async () => {
     setLoading(true);
-    const res = await fetch(`http://localhost:3000/api/stock/saveTestData`);
+    // 取得玩股網資料
+    const res = await fetch(`http://localhost:3000/api/stock/saveWantgooTestData`)
+    // 取得yahoo資料 (保證ok)
+    // const res = await fetch(`http://localhost:3000/api/stock/saveTestData`);
     const response = await res.json();
     if (response) {
       setSnackBarText("已建立今日測試資料");

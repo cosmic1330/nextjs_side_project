@@ -2,8 +2,8 @@ const Williams = require("../../skill/williams");
 const RSI = require("../../skill/rsi");
 const MA = require("../../skill/ma");
 const Gold = require("../../skill/gold");
-const waveLow= require("../../utils/waveLow");
-const waveHight  = require("../../utils/waveHight");
+const waveLow = require("../../utils/waveLow");
+const waveHight = require("../../utils/waveHight");
 
 // **   注意：所有使用技術測試日期都要取昨日不可使用今日，因為買入是以今日開盤價買入   **
 class BuyMethod {
@@ -134,8 +134,16 @@ class BuyMethod {
     let gold = this.gold.getGold($up, $down);
     let response = ma[ma.length - 1];
     if (
-      ma[ma.length - 2]["ma5"] > ma[ma.length - 2]["ma20"] &&
-      ma[ma.length - 2]["c"] > ma[ma.length - 2]["ma5"]
+      ma[ma.length - 2]["sumING"] > 0 &&
+      // ma[ma.length - 2]["ma5"] > ma[ma.length - 2]["ma20"] &&
+      ma[ma.length - 2]["c"] > ma[ma.length - 2]["ma5"] &&
+      ma[ma.length - 3]["l"] < ma[ma.length - 2]["l"] && //兩日不破前低
+      ma[ma.length - 4]["l"] < ma[ma.length - 3]["l"] &&
+      ((ma[ma.length - 2]["stockAgentMainPower"] > 0 &&
+        ma[ma.length - 3]["stockAgentMainPower"] > 0) ||
+        (ma[ma.length - 2]["skp5"] > 0 &&
+          ma[ma.length - 3]["skp5"] > 0 &&
+          ma[ma.length - 2]["skp5"] > ma[ma.length - 3]["skp5"]))
     ) {
       /* 
         custom提供驗證訊息
@@ -147,6 +155,10 @@ class BuyMethod {
         ma25: ma[ma.length - 2]["ma25"],
         UB: ma[ma.length - 2]["UB"],
         LB: ma[ma.length - 2]["LB"],
+        skp5:ma[ma.length - 2]["skp5"],
+        stockAgentMainPower: ma[ma.length - 2]["stockAgentMainPower"],
+        beforeSkp5:ma[ma.length - 3]["skp5"],
+        brdoreStockAgentMainPower: ma[ma.length - 3]["stockAgentMainPower"],
         gold: gold,
       };
       response = this.filterData(response, 3, list[key]);
