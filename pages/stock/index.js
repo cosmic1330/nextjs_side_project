@@ -282,7 +282,7 @@ export default function Stock({ list }) {
           hightLoss: 0.15,
           handlingFeeRebate: 0.65,
           capital: 300000,
-          fileName: "20210701.json",
+          fileName: "20210705.json",
           hightStockPrice: 100,
         }}
         render={({ handleSubmit }) => (

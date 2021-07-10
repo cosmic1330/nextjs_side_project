@@ -1,6 +1,7 @@
 const Williams = require("../../skill/williams");
 const RSI = require("../../skill/rsi");
 const MA = require("../../skill/ma");
+const MACD = require("../../skill/macd");
 const Gold = require("../../skill/gold");
 const waveLow = require("../../utils/waveLow");
 const waveHight = require("../../utils/waveHight");
@@ -11,6 +12,7 @@ class BuyMethod {
     this.williams = new Williams();
     this.rsi = new RSI();
     this.ma = new MA();
+    this.macd = new MACD();
     this.gold = new Gold();
   }
   filterData(response, method, list) {
@@ -155,13 +157,30 @@ class BuyMethod {
         ma25: ma[ma.length - 2]["ma25"],
         UB: ma[ma.length - 2]["UB"],
         LB: ma[ma.length - 2]["LB"],
-        skp5:ma[ma.length - 2]["skp5"],
+        skp5: ma[ma.length - 2]["skp5"],
         stockAgentMainPower: ma[ma.length - 2]["stockAgentMainPower"],
-        beforeSkp5:ma[ma.length - 3]["skp5"],
+        beforeSkp5: ma[ma.length - 3]["skp5"],
         brdoreStockAgentMainPower: ma[ma.length - 3]["stockAgentMainPower"],
         gold: gold,
       };
       response = this.filterData(response, 3, list[key]);
+    } else {
+      response.status = false;
+    }
+    return response;
+  }
+
+  method4(list, key) {
+    let macd = this.macd.getMACD(list[key]);
+    let response = macd[macd.length - 1];
+    if (true) {
+      response["custom"] = {
+        date: macd[macd.length - 2]["t"],
+        DIF: macd[macd.length - 2]["DIF"],
+        MACD9: macd[macd.length - 2]["MACD9"],
+        OSC: macd[macd.length - 2]["OSC"],
+      };
+      response = this.filterData(response, 3, macd);
     } else {
       response.status = false;
     }

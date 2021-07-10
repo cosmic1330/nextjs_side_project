@@ -41,7 +41,7 @@ class Context {
     let handle = this.stock.get();
     Object.keys(list).forEach((key) => {
       //  設定買進方式-------------------------------------------------
-      let response = this.buyMethod.method3(list, key);
+      let response = this.buyMethod.method4(list, key);
       //  ------------------------------------------------------------
 
       // 買進邏輯處理 + 紀錄訊息處理
