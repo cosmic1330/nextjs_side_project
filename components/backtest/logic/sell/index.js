@@ -75,16 +75,23 @@ class SellMethod {
   }
 
   method3(list, key) {
+    /* 
+       賣出:
+          跌破5日線
+    */
     let ma = this.ma.getMA(list[key]);
     let response = ma[ma.length - 1];
-    if (response["l"] < response["ma5"]) {
+    if (
+      response["l"] < response["ma5"] &&
+      ma[ma.length - 2]["l"] > ma[ma.length - 2]["ma5"]
+    ) {
       /* 
         custom提供驗證訊息
       */
       response["custom"] = {
         date: list[key][list[key].length - 1]["t"],
         ma5: response["ma5"],
-        method: 2,
+        method: 3,
         class: "sell",
       };
       response.status = true;

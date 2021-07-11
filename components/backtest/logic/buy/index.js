@@ -171,14 +171,25 @@ class BuyMethod {
   }
 
   method4(list, key) {
-    let macd = this.macd.getMACD(list[key]);
+    let rsi = this.rsi.getRSI6(list[key]);
+    let macd = this.macd.getMACD(rsi);
+    let william9 = this.williams.getWilliams(macd.slice(-10, -1));
+    let william18 = this.williams.getWilliams(macd.slice(-19, -1));
     let response = macd[macd.length - 1];
-    if (true) {
+    if (
+      macd[macd.length - 2]["rsi6"] > macd[macd.length - 3]["rsi6"] &&
+      ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
+        macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"]) &&
+      (william9 < -20 || william18 < -20)
+    ) {
       response["custom"] = {
         date: macd[macd.length - 2]["t"],
+        RSI6: macd[macd.length - 2]["rsi6"],
         DIF: macd[macd.length - 2]["DIF"],
         MACD9: macd[macd.length - 2]["MACD9"],
         OSC: macd[macd.length - 2]["OSC"],
+        William9: william9,
+        William18: william18,
       };
       response = this.filterData(response, 3, macd);
     } else {
