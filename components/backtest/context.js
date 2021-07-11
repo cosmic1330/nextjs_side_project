@@ -153,9 +153,9 @@ class Context {
   }
   update() {
     // 當每日資料更新執行買賣
+    this.updateNowPrice();
     this.sell();
     this.buy();
-    this.updateNowPrice();
   }
 }
 
