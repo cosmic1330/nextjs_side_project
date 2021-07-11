@@ -171,6 +171,12 @@ class BuyMethod {
   }
 
   method4(list, key) {
+    /* 
+      買進:
+        ris6大於昨日ris6
+        OSC 翻轉 或 大於昨日OSC
+        威廉小於 -20
+    */
     let rsi = this.rsi.getRSI6(list[key]);
     let macd = this.macd.getMACD(rsi);
     let william9 = this.williams.getWilliams(macd.slice(-10, -1));

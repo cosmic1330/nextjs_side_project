@@ -71,10 +71,16 @@ export default async (req, res) => {
     res.status(403).json(["error"]);
   }
 
+  //  過濾資料
+  let response = {};
+  Object.keys(obj).forEach((element) => {
+    response[element] = obj[element].reverse();
+  });
+
   // 寫入檔案
   fs.writeFile(
     path.join(`components/backtest/testData/${req.query.code}.json`),
-    JSON.stringify(obj),
+    JSON.stringify(response),
     function (error) {
       if (error) {
         console.log("文件寫入失敗");
