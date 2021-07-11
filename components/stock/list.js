@@ -92,7 +92,7 @@ export default function ListComponent({ item }) {
       return obj;
     });
     let header =
-      "股票代號,股票名稱,買入股價,賣出股價,買入時間,買出時間,買入價格,賣出價格,損益,目前價格,verification\n";
+      "股票代號,股票名稱,買入股價,賣出股價,買入時間,買出時間,買入價格,賣出價格,損益,賣出日收盤價,verification\n";
     let content = list.join("\n");
     let fileName = uuid();
     createCSV(fileName, header + content);
