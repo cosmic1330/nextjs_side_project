@@ -183,6 +183,7 @@ class BuyMethod {
     let william18 = this.williams.getWilliams(macd.slice(-19, -1));
     let response = macd[macd.length - 1];
     if (
+      macd[macd.length - 2]["v"] > 1000 &&
       macd[macd.length - 2]["rsi6"] > macd[macd.length - 3]["rsi6"] &&
       ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
         macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"]) &&

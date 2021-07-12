@@ -4,6 +4,9 @@ const path = require("path");
 const Williams = require("../../../components/backtest/skill/williams");
 const RSI = require("../../../components/backtest/skill/rsi");
 const MACD = require("../../../components/backtest/skill/macd");
+const Gold = require("../../../components/backtest/skill/gold");
+const waveLow = require("../../../components/backtest/utils/waveLow");
+const waveHight = require("../../../components/backtest/utils/waveHight");
 
 export default async (req, res) => {
   // 今日檔案
@@ -21,7 +24,7 @@ export default async (req, res) => {
   });
 
   // 如果選股資料夾中已有檔案
-  if (jsonFiles.indexOf(fileName) !== -1) {
+  if (jsonFiles.indexOf(fileName) !== -1 && false) {
     // 取得選股資料夾檔案資料
     let rawdata = fs.readFileSync(
       path.join(`data/selectStock/${fileName}`),
@@ -52,7 +55,7 @@ export default async (req, res) => {
       "utf8"
     );
     list = JSON.parse(list);
-    
+
     // 選股
     let arr = [];
     let Keys = Object.keys(list);
@@ -62,8 +65,8 @@ export default async (req, res) => {
       let macd = Macd.getMACD(rsi);
       let william9 = williams.getWilliams(macd.slice(-10, -1));
       let william18 = williams.getWilliams(macd.slice(-19, -1));
-      
-    let response = macd[macd.length - 1];
+
+      let response = macd[macd.length - 1];
       if (
         macd[macd.length - 1]["rsi6"] > macd[macd.length - 2]["rsi6"] &&
         ((macd[macd.length - 1]["OSC"] > 0 &&
@@ -81,6 +84,7 @@ export default async (req, res) => {
           William18: william18,
         };
         response = { ...response, ...field };
+        response = getOtherDetail(response, macd);
         arr.push(response);
       }
     });
@@ -102,23 +106,51 @@ export default async (req, res) => {
   }
 };
 
-function getData(code) {
-  return new Promise(function (resolve, reject) {
-    request.get(
-      {
-        url: `https://tw.quote.finance.yahoo.net/quote/q?type=ta&perd=d&mkt=10&sym=${code}&v=1&callback=`,
-      },
-      (error, response, body) => {
-        if (error) reject(error);
-        try {
-          body = body.replace("(", "");
-          body = body.replace(");", "");
-          body = JSON.parse(body);
-          resolve(body);
-        } catch (error) {
-          resolve(false);
-        }
-      }
-    );
-  });
+function getOtherDetail(response, list) {
+  // 計算壓力支撐
+  let pressure = null;
+  let shore = null;
+  if (list.length > 60) {
+    list = list.slice(-60);
+    let indexObj = list.map((item) => item.v);
+    let maxVolume = list.reduce(function (prev, item, index) {
+      return Math.max(prev, item.v);
+    }, 0);
+    let index = indexObj.indexOf(maxVolume);
+    if (list[index]["h"] < list[list.length - 1]["c"]) {
+      shore = list[index]["h"];
+    } else {
+      pressure = list[index]["h"];
+    }
+  }
+  response["pressure"] = pressure;
+  response["shore"] = shore;
+
+  // 計算黃金分割率
+  let GOLD = new Gold();
+  let $up = waveHight(list, "h");
+  let $down = waveLow(list, "l");
+  let gold = GOLD.getGold($up, $down);
+  response["gold"] = gold;
+
+  // 三關價
+  let three = { 上關: null, 中關: null, 下關: null };
+  three["上關"] =
+    parseInt(list[list.length - 1]["l"]) +
+    (parseInt(list[list.length - 1]["h"]) -
+      parseInt(list[list.length - 1]["l"])) *
+      1.382;
+
+  three["中關"] =
+    (parseInt(list[list.length - 1]["h"]) +
+      parseInt(list[list.length - 1]["l"])) *
+    0.5;
+
+  three["下關"] =
+    parseInt(list[list.length - 1]["h"]) -
+    (parseInt(list[list.length - 1]["h"]) -
+      parseInt(list[list.length - 1]["l"])) *
+      1.382;
+  response["three"] = three;
+  return response;
 }
