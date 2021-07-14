@@ -1,13 +1,16 @@
 const Williams = require("../../skill/williams");
 const RSI = require("../../skill/rsi");
 const MA = require("../../skill/ma");
+const MACD = require("../../skill/macd");
 const Gold = require("../../skill/gold");
 
 class SellMethod {
   constructor(list) {
     this.list = list;
     this.williams = new Williams();
+    this.rsi = new RSI();
     this.ma = new MA();
+    this.macd = new MACD();
     this.gold = new Gold();
   }
   method1(list, key) {
@@ -50,20 +53,21 @@ class SellMethod {
   method2(list, key) {
     /* 
        賣出:
-          今日 william9 高於-20 && william18 高於-20
+          主力賣出時
     */
-    let william9 = this.williams.getWilliams(list[key].slice(-9));
-    let william18 = this.williams.getWilliams(list[key].slice(-18));
-
-    let response = list[key][list[key].length - 1];
-    if (william9 > -20 && william18 > -20) {
+    let rsi = this.rsi.getRSI6(list[key]);
+    let ma = this.ma.getMA(rsi);
+    let response = ma[ma.length - 1];
+    if (
+      ma[ma.length - 2]["stockAgentMainPower"] < -100 &&
+      ma[ma.length - 3]["stockAgentMainPower"] < -100 &&
+      ma[ma.length - 4]["stockAgentMainPower"] < -100
+    ) {
       /* 
         custom提供驗證訊息
       */
       response["custom"] = {
-        date: list[key][list[key].length - 1]["t"],
-        william9,
-        william18,
+        date: ma[ma.length - 1]["t"],
         method: 2,
         class: "sell",
       };
@@ -77,13 +81,14 @@ class SellMethod {
   method3(list, key) {
     /* 
        賣出:
-          跌破5日線
+          投信賣出時
     */
     let ma = this.ma.getMA(list[key]);
     let response = ma[ma.length - 1];
     if (
-      response["l"] < response["ma5"] &&
-      ma[ma.length - 2]["l"] > ma[ma.length - 2]["ma5"]
+      ma[ma.length - 2]["sumING"] < -100 &&
+      ma[ma.length - 3]["sumING"] < -100 &&
+      ma[ma.length - 4]["sumING"] < -100
     ) {
       /* 
         custom提供驗證訊息

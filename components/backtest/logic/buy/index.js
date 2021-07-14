@@ -40,44 +40,36 @@ class BuyMethod {
     response["custom"]["method"] = method;
     return response;
   }
+
   method1(list, key) {
     /* 
       買進:
-        昨日 william9 高於-80 && william18 高於-80
-        前日 william9 低於-80 && william18 低於-80
+        ris6大於昨日ris6
+        OSC 翻轉 或 大於昨日OSC
+        威廉小於 -20
     */
-    let william9 = this.williams.getWilliams(list[key].slice(-10, -1));
-    let william18 = this.williams.getWilliams(list[key].slice(-19, -1));
-    let beforeWilliam9 = this.williams.getWilliams(list[key].slice(-11, -2));
-    let beforeWilliam18 = this.williams.getWilliams(list[key].slice(-20, -2));
-
-    let ma5 =
-      (list[key][list[key].length - 2]["c"] +
-        list[key][list[key].length - 3]["c"] +
-        list[key][list[key].length - 4]["c"] +
-        list[key][list[key].length - 5]["c"] +
-        list[key][list[key].length - 6]["c"]) /
-      5;
-
-    let response = list[key][list[key].length - 1];
+    let rsi = this.rsi.getRSI6(list[key]);
+    let macd = this.macd.getMACD(rsi);
+    let william9 = this.williams.getWilliams(macd.slice(-10, -1));
+    let william18 = this.williams.getWilliams(macd.slice(-19, -1));
+    let response = macd[macd.length - 1];
     if (
-      william9 > -80 &&
-      beforeWilliam9 < -80 &&
-      william18 > -80 &&
-      beforeWilliam18 < -80 &&
-      list[key][list[key].length - 2]["c"] > ma5
+      macd[macd.length - 2]["v"] > 1000 &&
+      macd[macd.length - 2]["rsi6"] > macd[macd.length - 3]["rsi6"] &&
+      ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
+        macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"]) &&
+      (william9 < -20 || william18 < -20)
     ) {
-      /* 
-        custom提供驗證訊息
-      */
       response["custom"] = {
-        date: list[key][list[key].length - 2]["t"],
-        william9,
-        beforeWilliam9,
-        william18,
-        beforeWilliam18,
+        date: macd[macd.length - 2]["t"],
+        RSI6: macd[macd.length - 2]["rsi6"],
+        DIF: macd[macd.length - 2]["DIF"],
+        MACD9: macd[macd.length - 2]["MACD9"],
+        OSC: macd[macd.length - 2]["OSC"],
+        William9: william9,
+        William18: william18,
       };
-      response = this.filterData(response, 1, list[key]);
+      response = this.filterData(response, 1, macd);
     } else {
       response.status = false;
     }
@@ -87,39 +79,23 @@ class BuyMethod {
   method2(list, key) {
     /* 
       買進:
-        昨日 rsi6 高於 前日rsi6
-        昨日 william9 低於-80 && william18 低於-80
-        昨日收盤價高於ma5
+        主力買進兩日
     */
-    let ma5 =
-      (list[key][list[key].length - 2]["c"] +
-        list[key][list[key].length - 3]["c"] +
-        list[key][list[key].length - 4]["c"] +
-        list[key][list[key].length - 5]["c"] +
-        list[key][list[key].length - 6]["c"]) /
-      5;
-    let res = this.rsi.getRSI6(list[key]);
+    let rsi = this.rsi.getRSI6(list[key]);
+    let ma = this.ma.getMA(rsi);
 
-    let william9 = this.williams.getWilliams(res.slice(-10, -1));
-    let william18 = this.williams.getWilliams(res.slice(-19, -1));
-
-    let response = res[res.length - 1];
+    let response = list[key][list[key].length - 1];
     if (
-      res[res.length - 2]["rsi6"] > res[res.length - 3]["rsi6"] &&
-      (william9 < -80 || william18 < -80) &&
-      res[res.length - 2]["c"] > ma5
+      ma[ma.length - 2]["stockAgentMainPower"] > 1000 &&
+      ma[ma.length - 3]["stockAgentMainPower"] > 1000
     ) {
       /* 
         custom提供驗證訊息
       */
       response["custom"] = {
-        date: res[res.length - 2]["t"],
-        rsi6: res[res.length - 2]["rsi6"],
-        beforeRsi: res[res.length - 3]["rsi6"],
-        william9,
-        william18,
+        date: list[key][list[key].length - 2]["t"],
       };
-      response = this.filterData(response, 2, list[key]);
+      response = this.filterData(response, 2, ma);
     } else {
       response.status = false;
     }
@@ -127,6 +103,30 @@ class BuyMethod {
   }
 
   method3(list, key) {
+    /* 
+      買進:
+        投信買進兩日
+    */
+    let ma = this.ma.getMA(list[key]);
+    let response = ma[ma.length - 1];
+
+    if (ma[ma.length - 2]["sumING"] > 1000 && ma[ma.length - 3]["sumING"] > 1000) {
+      /* 
+        custom提供驗證訊息
+      */
+      response["custom"] = {
+        date: ma[ma.length - 2]["t"],
+        sumING: ma[ma.length - 2]["sumING"],
+        beforeSumING: ma[ma.length - 3]["sumING"],
+      };
+      response = this.filterData(response, 3, ma);
+    } else {
+      response.status = false;
+    }
+    return response;
+  }
+
+  method4(list, key) {
     /* 
       買進:
     */
@@ -163,42 +163,7 @@ class BuyMethod {
         brdoreStockAgentMainPower: ma[ma.length - 3]["stockAgentMainPower"],
         gold: gold,
       };
-      response = this.filterData(response, 3, list[key]);
-    } else {
-      response.status = false;
-    }
-    return response;
-  }
-
-  method4(list, key) {
-    /* 
-      買進:
-        ris6大於昨日ris6
-        OSC 翻轉 或 大於昨日OSC
-        威廉小於 -20
-    */
-    let rsi = this.rsi.getRSI6(list[key]);
-    let macd = this.macd.getMACD(rsi);
-    let william9 = this.williams.getWilliams(macd.slice(-10, -1));
-    let william18 = this.williams.getWilliams(macd.slice(-19, -1));
-    let response = macd[macd.length - 1];
-    if (
-      macd[macd.length - 2]["v"] > 1000 &&
-      macd[macd.length - 2]["rsi6"] > macd[macd.length - 3]["rsi6"] &&
-      ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
-        macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"]) &&
-      (william9 < -20 || william18 < -20)
-    ) {
-      response["custom"] = {
-        date: macd[macd.length - 2]["t"],
-        RSI6: macd[macd.length - 2]["rsi6"],
-        DIF: macd[macd.length - 2]["DIF"],
-        MACD9: macd[macd.length - 2]["MACD9"],
-        OSC: macd[macd.length - 2]["OSC"],
-        William9: william9,
-        William18: william18,
-      };
-      response = this.filterData(response, 3, macd);
+      response = this.filterData(response, 4, list[key]);
     } else {
       response.status = false;
     }
