@@ -25,7 +25,7 @@ export default async (req, res) => {
   });
 
   // 如果選股資料夾中已有檔案
-  if (jsonFiles.indexOf(saveFile) !== -1 && false) {
+  if (jsonFiles.indexOf(saveFile) !== -1 ) {
     // 取得選股資料夾檔案資料
     let rawdata = fs.readFileSync(
       path.join(`data/selectStock/${saveFile}`),
