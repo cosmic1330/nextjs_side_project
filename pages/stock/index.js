@@ -6,7 +6,7 @@ import { Form, Field } from "react-final-form";
 import Dialog from "../../components/stock/dialog";
 import List from "../../components/stock/list";
 import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
+import Alert from '@material-ui/core/Alert';
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
@@ -262,14 +262,14 @@ export default function Stock({ list }) {
         autoHideDuration={3000}
         onClose={() => setOpenSnackBar(false)}
       >
-        <MuiAlert
+        <Alert
           elevation={6}
           variant="filled"
           onClose={() => setOpenSnackBar(false)}
           severity="success"
         >
           {snackBarText}
-        </MuiAlert>
+        </Alert>
       </Snackbar>
       {/* main layout */}
       <header className={style.header}>

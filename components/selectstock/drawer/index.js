@@ -1,0 +1,35 @@
+import { useContext } from "react";
+import {
+  StyledDrawer,
+  StyledHeader,
+  StyledMain,
+  StyledFooter,
+} from "./index.css";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Typography from "@material-ui/core/Typography";
+import ListCentent from "./list";
+import { SelectStockContext } from "../../../context";
+
+export default function Drawer() {
+  const { hover, setHover } = useContext(SelectStockContext);
+  const mouseOver = () => {
+    setHover((pre) => !pre);
+  };
+  return (
+    <StyledDrawer open={true} hover={hover}>
+      <StyledHeader>
+        <IconButton color="inherit" onClick={mouseOver}>
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h4" component="div">
+          {hover && "MStock"}
+        </Typography>
+      </StyledHeader>
+      <StyledMain>
+        <ListCentent />
+      </StyledMain>
+      <StyledFooter></StyledFooter>
+    </StyledDrawer>
+  );
+}
