@@ -69,8 +69,8 @@ export default async (req, res) => {
         macd[macd.length - 1]["v"] > 1000 &&
         macd[macd.length - 2]["c"] < macd[macd.length - 2]["UB"] &&
         macd[macd.length - 1]["c"] < 200 &&
-        macd[macd.length - 1]["stockAgentMainPower"] > 100 &&
-        macd[macd.length - 2]["stockAgentMainPower"] > 100 &&
+        macd[macd.length - 1]["stockAgentMainPower"] > 1000 &&
+        macd[macd.length - 2]["stockAgentMainPower"] > 1000 &&
         macd[macd.length - 1]["l"] > macd[macd.length - 2]["l"] &&
         macd[macd.length - 2]["l"] > macd[macd.length - 3]["l"] &&
         ((macd[macd.length - 1]["OSC"] > 0 &&

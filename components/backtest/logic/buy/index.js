@@ -161,6 +161,8 @@ class BuyMethod {
   method5(list, key) {
     /* 
       買進:
+        不高於布林通道(頂部)
+        主力買進
         兩日不破前低
         配合賣出方法2
     */
@@ -171,8 +173,8 @@ class BuyMethod {
     if (
       macd[macd.length - 2]["v"] > 1000 &&
       macd[macd.length - 2]["c"] < macd[macd.length - 2]["UB"] &&
-      macd[macd.length - 2]["stockAgentMainPower"] > 1000 &&
-      macd[macd.length - 3]["stockAgentMainPower"] > 1000 &&
+      macd[macd.length - 2]["stockAgentMainPower"] > 500 &&
+      macd[macd.length - 3]["stockAgentMainPower"] > 500 &&
       macd[macd.length - 2]["l"] > macd[macd.length - 3]["l"] &&
       macd[macd.length - 3]["l"] > macd[macd.length - 4]["l"] &&
       ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
