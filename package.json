@@ -16,6 +16,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "animate.css": "^4.1.1",
+    "dotenv": "^10.0.0",
     "final-form": "^4.20.2",
     "mongodb": "^3.6.9",
     "mongodb-client-encryption": "^1.2.5",

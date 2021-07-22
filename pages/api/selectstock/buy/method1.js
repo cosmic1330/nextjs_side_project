@@ -16,8 +16,6 @@ export default async (req, res) => {
   let yyyy = today.getFullYear();
   let fileName = yyyy + mm + dd + ".json";
   let saveFile = yyyy + mm + dd + "method1.json";
-  saveFile = "20210717method1.json";
-  fileName = "20210717.json";
 
   // 取得選股資料夾檔案
   let jsonFiles = [];
@@ -27,7 +25,7 @@ export default async (req, res) => {
   });
 
   // 如果選股資料夾中已有檔案
-  if (jsonFiles.indexOf(saveFile) !== -1) {
+  if (jsonFiles.indexOf(saveFile) !== -1 && false) {
     // 取得選股資料夾檔案資料
     let rawdata = fs.readFileSync(
       path.join(`data/selectStock/buy/${saveFile}`),
@@ -64,7 +62,8 @@ export default async (req, res) => {
     // 選股
     let arr = [];
     let Keys = Object.keys(list);
-    Keys.forEach((key) => {
+    for (let i = 0; i < Keys.length; i++) {
+      const key = Keys[i];
       let rsi = Rsi.getRSI6(list[key]);
       let macd = Macd.getMACD(rsi);
       let william9 = williams.getWilliams(macd.slice(-10, -1));
@@ -72,7 +71,8 @@ export default async (req, res) => {
 
       let response = macd[macd.length - 1];
       if (
-        macd[macd.length - 1]["c"] < 100 &&
+        macd[macd.length - 1]["c"] < 200 &&
+        macd[macd.length - 1]["v"] > 1000 &&
         macd[macd.length - 1]["rsi6"] > macd[macd.length - 2]["rsi6"] &&
         ((macd[macd.length - 1]["OSC"] > 0 &&
           macd[macd.length - 2]["OSC"] < 0) ||
@@ -87,12 +87,14 @@ export default async (req, res) => {
           OSC: macd[macd.length - 1]["OSC"],
           William9: william9,
           William18: william18,
+          news: await getNews(key),
+          importantEvent:await getImportantEvent(key),
         };
         response = { ...response, ...field };
         response = getOtherDetail(response, macd);
         arr.push(response);
       }
-    });
+    };
 
     // 寫入檔案
     fs.writeFile(
@@ -158,4 +160,40 @@ function getOtherDetail(response, list) {
       1.382;
   response["three"] = three;
   return response;
+}
+
+function getNews(code) {
+  return new Promise(function (resolve, reject) {
+    request.get(
+      {
+        url: `https://api.cnyes.com/media/api/v1/newslist/TWS%3A${code}%3ASTOCK/symbolNews?page=1&limit=10`,
+      },
+      (error, response, body) => {
+        if (error) reject(error);
+        try {
+          resolve(body);
+        } catch (error) {
+          resolve(false);
+        }
+      }
+    );
+  });
+}
+
+function getImportantEvent(code){
+  return new Promise(function (resolve, reject) {
+    request.get(
+      {
+        url: `https://marketinfo.api.cnyes.com/mi/api/v1/TWS%3A${code}%3ASTOCK/ImportantEvents?page=1`,
+      },
+      (error, response, body) => {
+        if (error) reject(error);
+        try {
+          resolve(body);
+        } catch (error) {
+          resolve(false);
+        }
+      }
+    );
+  });
 }

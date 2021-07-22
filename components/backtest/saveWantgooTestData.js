@@ -4,9 +4,8 @@ const path = require("path");
 
 async function run() {
   // 取得python檔案資料
-  let rawdata = fs.readFileSync("../../python/data/thisSeason/data.json");
+  let rawdata = fs.readFileSync("../../python/data/Eps/data.json");
   let jsonFile = JSON.parse(rawdata);
-
   // 撰寫格式
   let obj = {};
   for (let i = 0; i < jsonFile.dataList.length; i++) {
@@ -56,7 +55,7 @@ async function run() {
         stockAgentMainPower: main[e]["stockAgentMainPower"],
         sumING: investors[e]["sumING"],
         sumForeignNoDealer: investors[e]["sumForeignNoDealer"],
-        name: yahooData.mem.name,
+        name: yahooData&&yahooData.mem.name,
       };
       arr.push(data);
     }

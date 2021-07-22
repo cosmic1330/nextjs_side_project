@@ -57,7 +57,8 @@ class BuyMethod {
       macd[macd.length - 2]["v"] > 1000 &&
       macd[macd.length - 2]["rsi6"] > macd[macd.length - 3]["rsi6"] &&
       ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
-        macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"]) &&
+        (macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"] &&
+          macd[macd.length - 2]["OSC"] > 0)) &&
       (william9 < -20 || william18 < -20)
     ) {
       response["custom"] = {
@@ -110,7 +111,10 @@ class BuyMethod {
     let ma = this.ma.getMA(list[key]);
     let response = ma[ma.length - 1];
 
-    if (ma[ma.length - 2]["sumING"] > 1000 && ma[ma.length - 3]["sumING"] > 1000) {
+    if (
+      ma[ma.length - 2]["sumING"] > 1000 &&
+      ma[ma.length - 3]["sumING"] > 1000
+    ) {
       /* 
         custom提供驗證訊息
       */
@@ -129,41 +133,59 @@ class BuyMethod {
   method4(list, key) {
     /* 
       買進:
+        外資買進三日
     */
     let ma = this.ma.getMA(list[key]);
-    let $up = waveHight(ma.slice(0, -1), "h");
-    let $down = waveLow(ma.slice(0, -1), "l");
-    let gold = this.gold.getGold($up, $down);
     let response = ma[ma.length - 1];
+
     if (
-      ma[ma.length - 2]["sumING"] > 0 &&
-      // ma[ma.length - 2]["ma5"] > ma[ma.length - 2]["ma20"] &&
-      ma[ma.length - 2]["c"] > ma[ma.length - 2]["ma5"] &&
-      ma[ma.length - 3]["l"] < ma[ma.length - 2]["l"] && //兩日不破前低
-      ma[ma.length - 4]["l"] < ma[ma.length - 3]["l"] &&
-      ((ma[ma.length - 2]["stockAgentMainPower"] > 0 &&
-        ma[ma.length - 3]["stockAgentMainPower"] > 0) ||
-        (ma[ma.length - 2]["skp5"] > 0 &&
-          ma[ma.length - 3]["skp5"] > 0 &&
-          ma[ma.length - 2]["skp5"] > ma[ma.length - 3]["skp5"]))
+      ma[ma.length - 2]["sumForeignNoDealer"] > 100 &&
+      ma[ma.length - 3]["sumForeignNoDealer"] > 100 &&
+      ma[ma.length - 4]["sumForeignNoDealer"] > 100
     ) {
       /* 
         custom提供驗證訊息
       */
       response["custom"] = {
         date: ma[ma.length - 2]["t"],
-        ma5: ma[ma.length - 2]["ma5"],
-        ma20: ma[ma.length - 2]["ma20"],
-        ma25: ma[ma.length - 2]["ma25"],
-        UB: ma[ma.length - 2]["UB"],
-        LB: ma[ma.length - 2]["LB"],
-        skp5: ma[ma.length - 2]["skp5"],
-        stockAgentMainPower: ma[ma.length - 2]["stockAgentMainPower"],
-        beforeSkp5: ma[ma.length - 3]["skp5"],
-        brdoreStockAgentMainPower: ma[ma.length - 3]["stockAgentMainPower"],
-        gold: gold,
+        sumING: ma[ma.length - 2]["sumING"],
+        beforeSumING: ma[ma.length - 3]["sumING"],
       };
-      response = this.filterData(response, 4, list[key]);
+      response = this.filterData(response, 4, ma);
+    } else {
+      response.status = false;
+    }
+    return response;
+  }
+
+  method5(list, key) {
+    /* 
+      買進:
+        兩日不破前低
+        配合賣出方法2
+    */
+    let ma = this.ma.getMA(list[key]);
+    let macd = this.macd.getMACD(ma);
+
+    let response = ma[ma.length - 1];
+    if (
+      macd[macd.length - 2]["v"] > 1000 &&
+      macd[macd.length - 2]["c"] < macd[macd.length - 2]["UB"] &&
+      macd[macd.length - 2]["stockAgentMainPower"] > 1000 &&
+      macd[macd.length - 3]["stockAgentMainPower"] > 1000 &&
+      macd[macd.length - 2]["l"] > macd[macd.length - 3]["l"] &&
+      macd[macd.length - 3]["l"] > macd[macd.length - 4]["l"] &&
+      ((macd[macd.length - 2]["OSC"] > 0 && macd[macd.length - 3]["OSC"] < 0) ||
+        (macd[macd.length - 2]["OSC"] > macd[macd.length - 3]["OSC"] &&
+          macd[macd.length - 2]["OSC"] > 0))
+    ) {
+      /* 
+        custom提供驗證訊息
+      */
+      response["custom"] = {
+        date: ma[ma.length - 2]["t"],
+      };
+      response = this.filterData(response, 5, list[key]);
     } else {
       response.status = false;
     }

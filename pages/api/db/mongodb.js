@@ -4,8 +4,8 @@ export default async (req, res) => {
     const { db } = await connectToDatabase();
     try {
         const movies = await db
-            .collection("test")
-            .find({name: "jeff"})
+            .collection("eps")
+            .find({season:["2021Q1", "2020Q4"]})
             .sort({ metacritic: -1 })
             .limit(20)
             .toArray();

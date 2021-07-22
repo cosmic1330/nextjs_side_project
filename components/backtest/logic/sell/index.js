@@ -105,6 +105,34 @@ class SellMethod {
     }
     return response;
   }
+
+  method4(list, key) {
+    /* 
+       賣出:
+          外資賣出時
+    */
+    let ma = this.ma.getMA(list[key]);
+    let response = ma[ma.length - 1];
+    if (
+      ma[ma.length - 2]["sumForeignNoDealer"] < -100 &&
+      ma[ma.length - 3]["sumForeignNoDealer"] < -100 &&
+      ma[ma.length - 4]["sumForeignNoDealer"] < -100
+    ) {
+      /* 
+        custom提供驗證訊息
+      */
+      response["custom"] = {
+        date: list[key][list[key].length - 1]["t"],
+        ma5: response["ma5"],
+        method: 4,
+        class: "sell",
+      };
+      response.status = true;
+    } else {
+      response.status = false;
+    }
+    return response;
+  }
 }
 
 module.exports = SellMethod;

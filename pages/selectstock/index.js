@@ -8,7 +8,7 @@ import { SelectStockContext } from "../../context";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export default function SelectStock({ buyData }) {
+export default function SelectStock({ buyData, sellData }) {
   const [list, setList] = useState(buyData);
   const [select, setSelect] = useState("buy");
   const [hover, setHover] = useState(true);

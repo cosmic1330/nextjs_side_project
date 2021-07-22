@@ -16,8 +16,6 @@ export default async (req, res) => {
   let yyyy = today.getFullYear();
   let fileName = yyyy + mm + dd + ".json";
   let saveFile = yyyy + mm + dd + "method3.json";
-  saveFile = "20210717method3.json";
-  fileName = "20210717.json";
 
   // 取得選股資料夾檔案
   let jsonFiles = [];

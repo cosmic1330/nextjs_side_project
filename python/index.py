@@ -36,8 +36,8 @@ for stock in dic:
 
 # 寫入json
 j = json.dumps(response)
-f = open("./data/thisSeason/data.json", 'w', encoding='UTF-8')
+f = open("./data/Eps/data.json", 'w', encoding='UTF-8')
 f.write(j)
 f.close()
 
-print('finish')
+print(j)

@@ -4,7 +4,7 @@ const path = require("path");
 export default async (req, res) => {
   // 取得python檔案資料
   let rawdata = fs.readFileSync(
-    path.join("python/data/thisSeason/data.json"),
+    path.join("python/data/Eps/data.json"),
     "utf8"
   );
   let jsonFile = JSON.parse(rawdata);
