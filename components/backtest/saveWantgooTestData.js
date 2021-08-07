@@ -12,11 +12,12 @@ async function run() {
     const element = jsonFile.dataList[i];
     console.log(element);
     let main = await getMain(element);
+    console.log(main);
     // 如果沒有資料就跳過
-    if (main.length < 1) {
+    if (main || main.length < 1) {
       continue;
     }
-    let mainLastTime = main[main.length - 1]["date"];
+    let mainLastTime = main[main.length - 1]?.date;
     let price = await getPrice(element, mainLastTime);
     if (price.length < 1) {
       continue;
