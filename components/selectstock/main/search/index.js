@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { css } from "@emotion/css";
 import { SelectStockContext } from "../../../../context";
-import SearchIcon from "@material-ui/icons/Search";
-import { useTheme } from "@material-ui/core/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import { useTheme } from "@mui/material/styles";
 
 export default function Search() {
   const { select, onSubmit, method } = useContext(SelectStockContext);
@@ -19,7 +19,7 @@ export default function Search() {
     select: {
       root: css`
         width: 300px;
-        border-radius: 0 100px  100px   0;
+        border-radius: 0 100px 100px 0;
         background-color: ${theme.palette.primary.secound};
         & .MuiOutlinedInput-notchedOutline {
           border: none;

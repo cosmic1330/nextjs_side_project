@@ -1,24 +1,15 @@
-import Timeline from '@material-ui/lab/Timeline'
-import TimelineItem from '@material-ui/lab/TimelineItem'
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent'
-import Typography from '@material-ui/core/Typography'
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator'
-import TimelineConnector from '@material-ui/lab/TimelineConnector'
-import TimelineContent from '@material-ui/lab/TimelineContent'
-import TimelineDot from '@material-ui/lab/TimelineDot'
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: '6px 16px',
-  },
-}))
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import Typography from "@mui/material/Typography";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import Paper from "@mui/material/Paper";
 
 export default function TimeLine({ data }) {
-  const classes = useStyles()
-
   const render = () => {
     return (
       data &&
@@ -26,9 +17,9 @@ export default function TimeLine({ data }) {
         if (index === data.length - 1) {
           return (
             <TimelineItem key={index}>
-                <TimelineOppositeContent>
+              <TimelineOppositeContent>
                 <Typography variant="body2" color="textSecondary">
-                {item.time}
+                  {item.time}
                 </Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
@@ -37,7 +28,7 @@ export default function TimeLine({ data }) {
                 </TimelineDot>
               </TimelineSeparator>
               <TimelineContent>
-                <Paper elevation={3} className={classes.paper}>
+                <Paper elevation={3}>
                   <Typography variant="h6" component="h1">
                     {item.name}
                   </Typography>
@@ -45,13 +36,13 @@ export default function TimeLine({ data }) {
                 </Paper>
               </TimelineContent>
             </TimelineItem>
-          )
+          );
         } else if (index % 2 === 0) {
           return (
             <TimelineItem key={index}>
               <TimelineOppositeContent>
                 <Typography variant="body2" color="textSecondary">
-                {item.time}
+                  {item.time}
                 </Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
@@ -61,7 +52,7 @@ export default function TimeLine({ data }) {
                 <TimelineConnector />
               </TimelineSeparator>
               <TimelineContent>
-                <Paper elevation={3} className={classes.paper}>
+                <Paper elevation={3}>
                   <Typography variant="h6" component="h1">
                     {item.name}
                   </Typography>
@@ -69,7 +60,7 @@ export default function TimeLine({ data }) {
                 </Paper>
               </TimelineContent>
             </TimelineItem>
-          )
+          );
         } else if (index % 2 === 1) {
           return (
             <TimelineItem key={index}>
@@ -85,7 +76,7 @@ export default function TimeLine({ data }) {
                 <TimelineConnector />
               </TimelineSeparator>
               <TimelineContent>
-                <Paper elevation={3} className={classes.paper}>
+                <Paper elevation={3}>
                   <Typography variant="h6" component="h1">
                     {item.name}
                   </Typography>
@@ -93,10 +84,10 @@ export default function TimeLine({ data }) {
                 </Paper>
               </TimelineContent>
             </TimelineItem>
-          )
+          );
         }
       })
-    )
-  }
-  return <Timeline align="alternate">{render()}</Timeline>
+    );
+  };
+  return <Timeline align="alternate">{render()}</Timeline>;
 }

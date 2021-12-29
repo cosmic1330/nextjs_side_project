@@ -5,9 +5,9 @@ import {
   StyledMain,
   StyledFooter,
 } from "./index.css";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Typography from "@material-ui/core/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Typography from "@mui/material/Typography";
 import ListCentent from "./list";
 import { SelectStockContext } from "../../../context";
 

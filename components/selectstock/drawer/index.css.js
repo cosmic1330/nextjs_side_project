@@ -1,6 +1,6 @@
-import Drawer from "@material-ui/core/Drawer";
+import Drawer from "@mui/material/Drawer";
 import { css } from "@emotion/css";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 
 export const StyledDrawer = ({ hover, open, children, ...props }) => {
   const theme = useTheme();
@@ -48,7 +48,7 @@ export const StyledHeader = ({ children, ...props }) => {
     font-weight: 500;
     .MuiTypography-h4 {
       margin-left: 10px;
-    font-size: 30px;
+      font-size: 30px;
     }
   `;
   return (
