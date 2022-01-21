@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { css } from "@emotion/css";
-import { SelectStockContext } from "../../../../context";
+import { SelectStockContext } from "../../../../context/selectstock";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 

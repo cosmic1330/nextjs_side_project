@@ -1,0 +1,35 @@
+@font-face {
+    font-family: "Robot";
+    src: url("./Roboto-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+    unicode-range: U+2000-3fff;
+}
+
+@font-face {
+    font-family: "Noto Sans TC";
+    src: url("./NotoSansTC-Regular.otf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+    unicode-range: U+4000-5fff;
+}
+
+@font-face {
+    font-family: "Noto Sans JP";
+    src: url("./NotoSansSC-Regular.otf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+    unicode-range: U+6000-7fff;
+}
+
+@font-face {
+    font-family: "Noto Sans JP";
+    src: url("./NotoSansJP-Regular.otf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+    unicode-range: U+8000-9fff;
+}

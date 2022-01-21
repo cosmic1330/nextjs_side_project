@@ -4,7 +4,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Drawer from "../../components/selectstock/drawer";
 import ThemeProvider from "../../components/selectstock/theme";
 import Main from "../../components/selectstock/main";
-import { SelectStockContext } from "../../context";
+import { SelectStockContext } from "../../context/selectstock";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 

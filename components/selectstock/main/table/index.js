@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import { css } from "@emotion/css";
 import { useTheme } from "@mui/material/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { SelectStockContext } from "../../../../context";
+import { SelectStockContext } from "../../../../context/selectstock";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 

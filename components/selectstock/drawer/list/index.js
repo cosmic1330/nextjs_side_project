@@ -8,7 +8,7 @@ import NotificationImportantSharpIcon from "@mui/icons-material/NotificationImpo
 import { css } from "@emotion/css";
 import { useTheme } from "@mui/material/styles";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
-import { SelectStockContext } from "../../../../context";
+import { SelectStockContext } from "../../../../context/selectstock";
 
 export default function ListCentent() {
   const { select, setSelect, onSubmit, method } = useContext(

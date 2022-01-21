@@ -28,6 +28,9 @@ export default function Home() {
         <button onClick={() => router.push('/i18n')}>
           i18n測試
         </button>
+        <button onClick={() => router.push('/chartjs')}>
+          Chart測試
+        </button>
       </main>
     </div>
   )

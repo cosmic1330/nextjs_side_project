@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SelectStockContext } from "../../../../context";
+import { SelectStockContext } from "../../../../context/selectstock";
 import { css } from "@emotion/css";
 import { StyledButton } from "./index.css";
 export default function FileDetail() {

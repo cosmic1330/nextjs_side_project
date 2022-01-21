@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "backtest",
+      "path": ["pages/backtest", "pages/api/backtest"]
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true
+  }
+}

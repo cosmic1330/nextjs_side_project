@@ -1,7 +1,0 @@
-{
-    "title": "{{value}} | 國際化",
-    "footer":{
-        "description": "這是中文description"
-    },
-    "test":"公司共计{{msg}}人"
-}

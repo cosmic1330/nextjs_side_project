@@ -1,7 +1,1 @@
-{
-    "title": "{{value}} | internationalization",
-    "footer":{
-        "description": "this is English description"
-    },
-    "test":"totol {{msg}} person"
-}
+{}
