@@ -9,9 +9,12 @@ import Avatar from "@mui/material/Avatar";
 import { useField, useFormState } from "react-final-form";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
 import { useAppContext } from "../../../../../../context/backtest";
 import debounce from "lodash/debounce";
+import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
+import Tooltip from "@mui/material/Tooltip";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 export default function Setting({
   grid,
@@ -25,6 +28,8 @@ export default function Setting({
   const { input: startDate } = useField("startDate");
   const { input: endDate } = useField("endDate");
   const { stockData } = useAppContext();
+  const [disabled, setDisabled] = useState(false);
+  const { t } = useTranslation("backtest");
 
   const cssWrap = css`
     padding: 10px;
@@ -38,13 +43,13 @@ export default function Setting({
     overflow: auto;
   `;
 
+  const handleRunAll = () => {
+    setDisabled(true);
+    runAll();
+  };
+
   const onSubmit = debounce(async () => {
     let data = stockData;
-    if (values.justBuy) {
-      data = {};
-      let stocks = values.justBuy.split(",");
-      stocks.map((id) => (data[id] = stockData[id]));
-    }
     let options = {
       limitHandlingFee: parseInt(values.lowestHandlingFee),
       capital: parseInt(values.capital),
@@ -54,66 +59,93 @@ export default function Setting({
     };
     set(data, options);
   }, 700);
+
+  const Subheader = () => (
+    <Stack direction="row" spacing={2} gap={1} alignItems="center">
+      {`${Object.keys(stockData).length || 0} ${t(
+        "main.pages.page2.grids.setting.StocksData"
+      )}`}
+      <Tooltip title={t("main.pages.page2.grids.setting.Help")}>
+        <HelpOutlineOutlinedIcon fontSize="small" />
+      </Tooltip>
+    </Stack>
+  );
+
+  useEffect(() => {
+    setDisabled(false);
+  }, [context]);
   return (
     <Card variant="outlined" className={cssWrap}>
       <CardHeader
         avatar={<Avatar>S</Avatar>}
-        title="Current Setting Variable"
-        subheader={`${Object.keys(stockData).length || 0} stocks data`}
+        title={t("main.pages.page2.grids.setting.CurrentSettingVariable")}
+        subheader={<Subheader />}
       />
       <CardContent>
-        <StackContent title={"Start Date"} value={startDate.value} />
-        <StackContent title={"End Date"} value={endDate.value} />
         <StackContent
-          title={"Lowest Handling Fee"}
+          title={t("main.pages.page2.grids.setting.StartDate")}
+          value={startDate.value}
+        />
+        <StackContent
+          title={t("main.pages.page2.grids.setting.EndDate")}
+          value={endDate.value}
+        />
+        <StackContent
+          title={t("main.pages.page2.grids.setting.LowestHandlingFee")}
           value={`NT.${context?.transaction.limitHandlingFee || 0}`}
         />
         <StackContent
-          title={"Handling Fee Rebate"}
-          value={`${context?.transaction.handlingFeeRebate || 0}%`}
+          title={t("main.pages.page2.grids.setting.HandlingFeeRebate")}
+          value={`${context?.transaction.handlingFeeRebate * 100 || 0}%`}
         />
         <StackContent
-          title={"Highest Loss"}
-          value={`${context?.hightLoss || 0}%`}
+          title={t("main.pages.page2.grids.setting.HighestLoss")}
+          value={`-${context?.hightLoss * 100 || 0}%`}
         />
         <StackContent
-          title={"Limit Purchase Price"}
-          value={`NT.${context?.hightStockPrice} / per share`}
+          title={t("main.pages.page2.grids.setting.LimitPurchasePrice")}
+          value={`NT.${context?.hightStockPrice} / ${t(
+            "main.pages.page2.grids.setting.PerShare"
+          )}`}
         />
         <StackContent
-          title={"Stocks"}
+          title={t("main.pages.page2.grids.setting.Stocks")}
           value={`${context?.stockIds.length}`}
         />
-        <StackContent title={"Capital"} value={`NT.${context?.capital || 0}`} />
         <StackContent
-          title={"Current Date"}
+          title={t("main.pages.page2.grids.setting.Capital")}
+          value={`NT.${context?.capital || 0}`}
+        />
+        <StackContent
+          title={t("main.pages.page2.grids.setting.CurrentDate")}
           value={others?.currentDate || "********"}
         />
         <Divider />
       </CardContent>
       <CardActions>
         <Button variant="contained" onClick={onSubmit}>
-          {context ? "Restart" : "Run Test"}
+          {context
+            ? t("main.pages.page2.grids.setting.Restart")
+            : t("main.pages.page2.grids.setting.RunTest")}
         </Button>
         {context && (
-          <Tooltip title="Run once test">
-            <Button variant="contained" onClick={runOnce}>
-              Once
-            </Button>
-          </Tooltip>
+          <Button variant="contained" onClick={runOnce} disabled={disabled}>
+            {t("main.pages.page2.grids.setting.Once")}
+          </Button>
         )}
         {context && (
-          <Tooltip title="Run one year dates">
-            <Button variant="contained" onClick={runAll}>
-              One Year
-            </Button>
-          </Tooltip>
+          <Button
+            variant="contained"
+            onClick={handleRunAll}
+            disabled={disabled}
+          >
+            {t("main.pages.page2.grids.setting.OneYear")}
+          </Button>
         )}
       </CardActions>
     </Card>
   );
 }
-
 function StackContent({ title, value }) {
   return (
     <Stack direction="row" spacing={2} mb={1} alignItems="center">

@@ -2,7 +2,8 @@ import { Form } from "react-final-form";
 import Title from "./title";
 import DialogForm from "./form";
 import Pages from "./pages";
-export default function Main() {
+import { memo } from "react";
+export default memo(function Main() {
   return (
     <main>
       <Form
@@ -25,4 +26,4 @@ export default function Main() {
       />
     </main>
   );
-}
+});

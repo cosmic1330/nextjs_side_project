@@ -10,6 +10,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "next-i18next";
+import { memo } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -22,6 +24,7 @@ ChartJS.register(
 
 const options = {
   responsive: true,
+  maintainAspectRatio: true,
   plugins: {
     legend: {
       position: "top" as const,
@@ -35,22 +38,25 @@ const options = {
 
 export default function Two({ grid, record }) {
   const { custom, palette } = useTheme();
+  const { t } = useTranslation("backtest");
   const labels = [
-    "win rate:" +
-      `${
-        record.win && record.lose ? (record.win / record.lose).toFixed(2) : 0
+    t("main.pages.page2.grids.two.WinRate") +
+      `:${
+        record.win && record.lose
+          ? (record.win / (record.win + record.lose)).toFixed(2)
+          : 0
       }`,
   ];
   const data = {
     labels,
     datasets: [
       {
-        label: `win:${record.win || 0}`,
+        label: `${t("main.pages.page2.grids.two.Win")}:${record.win || 0}`,
         data: [record.win],
         backgroundColor: [palette.primary.main],
       },
       {
-        label: `lose:${record.lose || 0}`,
+        label: `${t("main.pages.page2.grids.two.Lose")}:${record.lose || 0}`,
         data: [record.lose],
         backgroundColor: [custom.text.dark],
       },
@@ -66,6 +72,7 @@ export default function Two({ grid, record }) {
     grid-row-end: ${grid[3]};
     background: #f4f4f4;
     transition: 1s;
+    overflow: auto;
   `;
   return (
     <div className={cssWrap}>

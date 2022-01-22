@@ -5,9 +5,8 @@ const AppContext = createContext();
 
 export function AppWrapper({ children }) {
   // context
-  // const [stockData, setStockData] = useState({});
   const stockData = useRef({});
-  const [dataRunning, setDataRunning] = useState(true);
+  const [dataRunning, setDataRunning] = useState(false);
 
   const setStockData = (value) => (stockData.current = value);
 

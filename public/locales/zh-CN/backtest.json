@@ -1,8 +1,75 @@
 {
+  "common": {
+    "Ok": "确认"
+  },
+  "loading": {
+    "dataLoading": {
+      "LoadingData": "读取资料"
+    }
+  },
   "main": {
     "title": {
-      "mutiple": "多次分析",
-      "once": "單次"
+      "Mutiple": "多次分析",
+      "Once": "单次"
+    },
+    "form": {
+      "SettingVariable": "设定测试参数",
+      "StartDate": "起始日期",
+      "EndDate": "结束日期",
+      "LowestHandlingFee": "最低手续费",
+      "HandlingFeeRebate": "手续费折扣",
+      "HighestLoss": "止损点",
+      "LimitPurchasePrice": "限制买入价格",
+      "Capital": "本金",
+      "JustBuy": "限定购入"
+    },
+    "pages": {
+      "page2": {
+        "grids": {
+          "setting": {
+            "CurrentSettingVariable": "目前设定参数",
+            "StartDate": "起始日期",
+            "EndDate": "结束日期",
+            "LowestHandlingFee": "最低手续费",
+            "HandlingFeeRebate": "手续费折扣",
+            "HighestLoss": "止损点",
+            "LimitPurchasePrice": "限制买入价格",
+            "Stocks": "股票资料数",
+            "Capital": "本金",
+            "Current Date": "目前测试日期",
+            "StocksData": "笔资料",
+            "PerShare": "每股",
+            "Restart": "重新启动",
+            "RunTest": "执行",
+            "Once": "测试一日",
+            "OneYear": "测试一年",
+            "Help":"隨機抽樣"
+          },
+          "one": {},
+          "two": {
+            "Win": "赢",
+            "Lose": "输",
+            "WinRate": "胜率"
+          },
+          "three": {
+            "UnsettledProfit": "未售出损益",
+            "Profit": "已售出损益"
+          },
+          "four": {
+            "Inventory": "库存",
+            "PurchaseRecord": "购买纪录",
+            "SeeDetail": "查看详情",
+            "BuyPrice": "买入价格",
+            "SellPrice": "卖出价格",
+            "BuyDate": "买入日期",
+            "SellDate": "卖出日期",
+            "Profit": "损益",
+            "BuyRequirement":"买入原因",
+            "SellRequirement":"卖出原因",
+            "NotFoundData":"没有发现纪录"
+          }
+        }
+      }
     }
   }
 }

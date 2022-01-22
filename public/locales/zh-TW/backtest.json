@@ -1,8 +1,76 @@
 {
+  "common": {
+    "Ok": "確認"
+  },
+  "loading": {
+    "dataLoading": {
+      "LoadingData": "讀取資料"
+    }
+  },
   "main": {
     "title": {
-      "mutiple": "多次分析",
-      "once": "單次"
+      "Mutiple": "多次分析",
+      "Once": "單次"
+    },
+    "form": {
+      "SettingVariable": "設定測試參數",
+      "StartDate": "起始日期",
+      "EndDate": "結束日期",
+      "LowestHandlingFee": "最低手續費",
+      "HandlingFeeRebate": "手續費折扣",
+      "HighestLoss": "止損點",
+      "LimitPurchasePrice": "限制買入價格",
+      "Capital": "本金",
+      "JustBuy": "限定購入"
+    },
+    "pages": {
+      "page2": {
+        "grids": {
+          "setting": {
+            "CurrentSettingVariable": "目前設定參數",
+            "StartDate": "起始日期",
+            "EndDate": "結束日期",
+            "LowestHandlingFee": "最低手續費",
+            "HandlingFeeRebate": "手續費折扣",
+            "HighestLoss": "止損點",
+            "LimitPurchasePrice": "限制買入價格",
+            "Stocks": "股票資料數",
+            "Capital": "本金",
+            "CurrentDate": "目前測試日期",
+            "StocksData": "筆資料",
+            "PerShare": "每股",
+            "Restart": "重新啟動",
+            "RunTest": "執行",
+            "Once": "測試一日",
+            "OneYear": "測試一年",
+            "Help": "從資料庫中隨機抽樣100筆股票提供測試"
+          },
+          "one": {},
+          "two": {
+            "Win": "贏",
+            "Lose": "輸",
+            "WinRate": "勝率"
+          },
+          "three": {
+            "UnsettledProfit": "未售出損益",
+            "Profit": "已售出損益"
+          },
+          "four": {
+            "Inventory": "庫存",
+            "PurchaseRecord": "購買紀錄",
+            "SeeDetail": "查看詳情",
+            "BuyPrice": "買入價格",
+            "SellPrice": "賣出價格",
+            "BuyDate": "買入日期",
+            "SellDate": "賣出日期",
+            "Profit": "損益",
+            "BuyRequirement": "買入原因",
+            "SellRequirement": "賣出原因",
+            "NotFoundData": "沒有發現紀錄",
+            "ExportExcel": "匯出Excel"
+          }
+        }
+      }
     }
   }
 }

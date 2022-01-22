@@ -28,10 +28,10 @@ export default function Backtest() {
 }
 
 function Content({ ids }) {
-  const { set } = useWorkerStockData();
+  const { set, stockData } = useWorkerStockData();
 
   useEffect(() => {
-    set(ids);
+    if (Object.keys(stockData).length === 0) set(ids);
   }, [ids]);
 
   return (
@@ -45,7 +45,7 @@ function Content({ ids }) {
         }}
       />
       <Header />
-      <Main />
+      <Main {...{set}}/>
     </BackTestThemeProvider>
   );
 }

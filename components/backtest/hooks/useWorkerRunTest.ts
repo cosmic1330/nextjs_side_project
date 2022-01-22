@@ -8,18 +8,17 @@ export default function useWorkerRunTest() {
 
   const runOnce = useCallback(async () => {
     workerRef.current?.postMessage({ num: 1 });
-  }, [context]);
+  }, [workerRef.current]);
 
   const runAll = useCallback(async () => {
     workerRef.current?.postMessage({ num: 365 });
-  }, [context]);
+  }, [workerRef.current]);
 
   useEffect(() => {
     workerRef.current = new Worker(
       new URL("../workers/runTest.worker.js", import.meta.url)
     );
     workerRef.current.onmessage = (e) => {
-      console.log(e.data);
       setContext(e.data);
       setRecord(e.data.record);
       setOthers({
@@ -38,9 +37,10 @@ export default function useWorkerRunTest() {
     };
   }, []);
 
-  const set = (data, options) => {
+  const set = useCallback((data, options) => {
     workerRef.current?.postMessage({ data, options, num: false });
-  };
+  }, [workerRef.current]);
+
 
   return { set, context, runAll, runOnce, record, others };
 }

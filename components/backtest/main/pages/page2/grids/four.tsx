@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -13,19 +13,21 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import DialogContent from "@mui/material/DialogContent";
+import { useTranslation } from "next-i18next";
 
-export default function Four({ grid, record }) {
+export default function Four({ grid, record, others }) {
+  const { t } = useTranslation("backtest");
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
-  const exportTestResult = () => {
+  const exportTestResult = useCallback(() => {
     if (record?.history) {
       let list = record.history.map((item) => {
         let obj = [
@@ -40,14 +42,27 @@ export default function Four({ grid, record }) {
         ].join(",");
         return obj;
       });
+      list.push(`, , , , , , , \n`);
       let header =
         "股票名稱,買進時間,賣出時間,買進金額,賣出金額,損益,買進原因,賣出原因\n";
       let content = list.join("\n");
-      createCSV("test_history_record", header + content);
+      let header2 = "剩餘本金,已結算損益,持股損益,總損益,贏,輸,勝率,庫存數\n";
+      let content2 =
+        [
+          others.capital,
+          record.profit,
+          others.unSoldProfit,
+          record.profit + others.unSoldProfit,
+          record.win,
+          record.lose,
+          record.win / (record.win + record.lose),
+          Object.keys(record.inventory).length,
+        ].join(",") + "\n";
+      createCSV("test_history_record", header + content + header2 + content2);
     } else {
       alert("Please run test first.");
     }
-  };
+  }, [record, others]);
 
   const cssWrap = css`
     padding: 10px;
@@ -59,10 +74,19 @@ export default function Four({ grid, record }) {
     background: #f4f4f4;
     transition: 1s;
   `;
+
+  const chips = useCallback(() => {
+    return (
+      record?.inventory &&
+      Object.keys(record.inventory).map((id) => (
+        <Chip label={id} size="small" variant="outlined" key={id} />
+      ))
+    );
+  }, [record]);
   return (
     <div className={cssWrap}>
       <Typography variant="h6" gutterBottom component="div">
-        Inventory
+        {t("main.pages.page2.grids.four.Inventory")}
       </Typography>
       <Box
         sx={{
@@ -72,16 +96,13 @@ export default function Four({ grid, record }) {
           marginBottom: "20px",
         }}
       >
-        {record?.inventory &&
-          Object.keys(record.inventory).map((id) => (
-            <Chip label={id} size="small" variant="outlined" key={id}/>
-          ))}
+        {chips()}
       </Box>
 
       <Typography variant="h6" gutterBottom component="div">
         <Stack direction="row" spacing={2} alignItems="center">
-          <span>Purchase Record</span>
-          <Tooltip title="export excel">
+          <span>{t("main.pages.page2.grids.four.PurchaseRecord")}</span>
+          <Tooltip title={t("main.pages.page2.grids.four.ExportExcel")}>
             <IconButton color="success" onClick={exportTestResult}>
               <ExplicitIcon />
             </IconButton>
@@ -89,7 +110,7 @@ export default function Four({ grid, record }) {
         </Stack>
       </Typography>
       <Button color="secondary" variant="contained" onClick={handleClickOpen}>
-        See Detail
+        {t("main.pages.page2.grids.four.SeeDetail")}
       </Button>
       <SimpleDialog
         open={open}
@@ -107,9 +128,12 @@ interface SimpleDialogProps {
 }
 
 function SimpleDialog({ onClose, open, history = [] }: SimpleDialogProps) {
+  const { t } = useTranslation("backtest");
   return (
     <Dialog onClose={onClose} open={open}>
-      <DialogTitle>Purchase Record</DialogTitle>
+      <DialogTitle>
+        {t("main.pages.page2.grids.four.PurchaseRecord")}
+      </DialogTitle>
       <DialogContent sx={{ maxHeight: "80vh" }}>
         {history.length > 0
           ? history.map((item, index) => (
@@ -119,36 +143,42 @@ function SimpleDialog({ onClose, open, history = [] }: SimpleDialogProps) {
                 </Stack>
                 <Stack direction="row" spacing={4} alignItems={"center"}>
                   <Typography variant="overline">
-                    Buy Price: ${item.buy["buyPrice"]}
+                    {t("main.pages.page2.grids.four.BuyPrice")}: $
+                    {item.buy["buyPrice"]}
                   </Typography>
                   <Typography variant="overline">
-                    Sell Price: ${item.sell["sellPrice"]}
+                    {t("main.pages.page2.grids.four.SellPrice")}: $
+                    {item.sell["sellPrice"]}
                   </Typography>
                   <Typography variant="overline">
-                    Buy Date: {item.buy["t"]}
+                    {t("main.pages.page2.grids.four.BuyDate")}: {item.buy["t"]}
                   </Typography>
                   <Typography variant="overline">
-                    Sell Date: {item.sell["t"]}
+                    {t("main.pages.page2.grids.four.SellDate")}:{" "}
+                    {item.sell["t"]}
                   </Typography>
-                  
+
                   <Typography variant="overline">
-                    Profit: ${item.sell["sellPrice"] - item.buy["buyPrice"]}
-                  </Typography>
-                </Stack>
-                <Stack direction="row" >
-                  <Typography variant="caption">
-                    Buy Requirement : {item.buy["detail"]}
+                    {t("main.pages.page2.grids.four.Profit")}: $
+                    {item.sell["sellPrice"] - item.buy["buyPrice"]}
                   </Typography>
                 </Stack>
                 <Stack direction="row">
                   <Typography variant="caption">
-                    Sell Requirement : {item.sell["detail"]}
+                    {t("main.pages.page2.grids.four.BuyRequirement")}:{" "}
+                    {item.buy["detail"]}
+                  </Typography>
+                </Stack>
+                <Stack direction="row">
+                  <Typography variant="caption">
+                    {t("main.pages.page2.grids.four.SellRequirement")}:{" "}
+                    {item.sell["detail"]}
                   </Typography>
                 </Stack>
                 <Divider />
               </Fragment>
             ))
-          : "Not found data"}
+          : t("main.pages.page2.grids.four.NotFoundData")}
       </DialogContent>
     </Dialog>
   );

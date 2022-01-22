@@ -14,12 +14,6 @@ addEventListener("message", async (event) => {
   }
 
   async function splited(ids) {
-    // for (let i = 0; i < ids.length; i++) {
-    //   const id = ids[i];
-    //   await get(id);
-    //   if (i % 100 === 0 || i === ids.length - 1) postMessage(stockData);
-    // }
-    //  this will STATUS_BREAKPOINT
     promises = [];
     for (let i = 0; i < 100; i++) {
       const id = ids[i];

@@ -1,10 +1,10 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import urljoin from "url-join";
 import { useAppContext } from "../../../context/backtest";
 
 export default function useWorkerStockData() {
   const workerRef = useRef<Worker>();
-  const { setStockData, setDataRunning } = useAppContext();
+  const { setStockData, setDataRunning, stockData } = useAppContext();
 
   useEffect(() => {
     setDataRunning(true);
@@ -12,7 +12,6 @@ export default function useWorkerStockData() {
       new URL("../workers/stockData.worker.js", import.meta.url)
     );
     workerRef.current.onmessage = (e) => {
-      // console.log(e.data);
       setStockData(e.data);
       setDataRunning(false);
     };
@@ -22,11 +21,11 @@ export default function useWorkerStockData() {
     };
   }, []);
 
-  const set = (ids) => {
+  const set = useCallback((ids) => {
     const hostPort = process.env.NEXT_PUBLIC_HOST_PORT;
     var url = urljoin(hostPort, "api", "backtest", "getStockData?");
     workerRef.current?.postMessage({ ids, url });
-  };
+  }, [workerRef.current]);
 
-  return { set };
+  return { set, stockData };
 }

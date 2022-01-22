@@ -6,15 +6,18 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useField } from "react-final-form";
 import mq from "../theme/breakpoint";
+import { useTranslation } from "next-i18next";
+import { memo } from "react";
 
-export default function DialogForm() {
-  const { custom, palette } = useTheme();
+export default memo(function DialogForm() {
+  const { custom } = useTheme();
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation("backtest");
 
   const regexNumber = (value) => {
     if (value) {
@@ -95,13 +98,13 @@ export default function DialogForm() {
     }
   `;
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
   return (
     <>
@@ -109,18 +112,18 @@ export default function DialogForm() {
         <SettingsIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{"Setting Variable"}</DialogTitle>
+        <DialogTitle>{t("main.form.SettingVariable")}</DialogTitle>
         <DialogContent className={cssContent}>
           <Stack direction="row" spacing={2}>
             <TextField
-              label="Start Date"
+              label={t("main.form.StartDate")}
               fullWidth
               variant="standard"
               disabled
               value={startDate.value}
             />
             <TextField
-              label="End Date"
+              label={t("main.form.EndDate")}
               fullWidth
               variant="standard"
               disabled
@@ -129,7 +132,7 @@ export default function DialogForm() {
           </Stack>
           <Stack direction="row" spacing={2}>
             <TextField
-              label="Lowest Handling Fee"
+              label={t("main.form.LowestHandlingFee")}
               fullWidth
               variant="standard"
               value={lowestHandlingFee.value}
@@ -141,7 +144,7 @@ export default function DialogForm() {
               helperText={lowestHandlingFeeMeta.error}
             />
             <TextField
-              label="Handling Fee Rebate"
+              label={t("main.form.HandlingFeeRebate")}
               fullWidth
               variant="standard"
               value={handlingFeeRebate.value}
@@ -155,7 +158,7 @@ export default function DialogForm() {
           </Stack>
           <Stack direction="row" spacing={2}>
             <TextField
-              label="Highest Loss"
+              label={t("main.form.HighestLoss")}
               variant="standard"
               fullWidth
               value={highestLoss.value}
@@ -167,7 +170,7 @@ export default function DialogForm() {
               helperText={highestLossMeta.error}
             />
             <TextField
-              label="Limit Purchase Price"
+              label={t("main.form.LimitPurchasePrice")}
               variant="standard"
               fullWidth
               value={hightStockPrice.value}
@@ -181,7 +184,7 @@ export default function DialogForm() {
           </Stack>
           <Stack direction="row" spacing={1}>
             <TextField
-              label="Capital"
+              label={t("main.form.Capital")}
               variant="standard"
               fullWidth
               value={capital.value}
@@ -195,7 +198,8 @@ export default function DialogForm() {
           </Stack>
           <Stack direction="row" spacing={1}>
             <TextField
-              label="Just Buy"
+              disabled
+              label={t("main.form.JustBuy")}
               variant="standard"
               fullWidth
               placeholder="2303,1101"
@@ -208,10 +212,10 @@ export default function DialogForm() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>
-            ok
+            {t("common.Ok")}
           </Button>
         </DialogActions>
       </Dialog>
     </>
   );
-}
+})

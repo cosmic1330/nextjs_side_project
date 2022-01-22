@@ -1,4 +1,5 @@
 import { css, cx, keyframes } from "@emotion/css";
+import { useTranslation } from "next-i18next";
 const spinning = keyframes`100% { transform: rotate(360deg) }`;
 const scaling = keyframes`50% {transform: scale(1.2)}`;
 const cssLoading = css`
@@ -59,6 +60,7 @@ const cssLoading = css`
   }
 `;
 export default function DataLoading() {
+  const { t } = useTranslation("backtest");
   return (
     <div className={cssLoading}>
       <div className="spinner">
@@ -67,7 +69,7 @@ export default function DataLoading() {
         <div className="petal" id="p3"></div>
         <div className="petal" id="p4"></div>
       </div>
-      <span>Data Running</span>
+      <span>{t("loading.dataLoading.LoadingData")}</span>
     </div>
   );
 }

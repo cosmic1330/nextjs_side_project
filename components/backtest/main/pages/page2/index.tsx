@@ -7,16 +7,17 @@ import Four from "./grids/four";
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import useWorkerRunTest from "../../../hooks/useWorkerRunTest";
+import { memo } from "react";
 
-export default function Page2() {
+export default memo(function Page2() {
   const { custom, palette } = useTheme();
   const { context, set, runOnce, runAll, record, others } = useWorkerRunTest();
   const [gridPosition, setGridPosition] = useState({
-    setting: [3, 4, 1, 3],
-    one: [1, 3, 1, 3],
+    setting: [3, 4, 1, 4],
+    one: [1, 2, 1, 3],
     two: [1, 2, 3, 4],
-    three: [2, 3, 3, 4],
-    four: [3, 4, 3, 4],
+    three: [2, 3, 1, 3],
+    four: [2, 3, 3, 4],
   });
 
   const cssWrap = css`
@@ -40,6 +41,7 @@ export default function Page2() {
     //捲軸寬度
     *::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
       background-color: black;
     }
     //捲軸本體顏色
@@ -65,7 +67,7 @@ export default function Page2() {
       <One {...{ grid: gridPosition.one, context, record }} />
       <Two {...{ grid: gridPosition.two, record }} />
       <Three {...{ grid: gridPosition.three, others, record }} />
-      <Four {...{ grid: gridPosition.four, record }} />
+      <Four {...{ grid: gridPosition.four, record, others }} />
     </div>
   );
-}
+})

@@ -1,8 +1,76 @@
 {
+  "common": {
+    "Ok": "OK"
+  },
+  "loading": {
+    "dataLoading": {
+      "LoadingData": "Loading Data"
+    }
+  },
   "main": {
     "title": {
-      "mutiple": "Mutiple",
-      "once": "Once"
+      "Mutiple": "Mutiple",
+      "Once": "Once"
+    },
+    "form": {
+      "SettingVariable": "Setting Variable",
+      "StartDate": "Start Date",
+      "EndDate": "End Date",
+      "LowestHandlingFee": "Lowest Handling Fee",
+      "HandlingFeeRebate": "Handling Fee Rebate",
+      "HighestLoss": "Highest Loss",
+      "LimitPurchasePrice": "Limit Purchase Price",
+      "Capital": "Capital",
+      "JustBuy": "Just Buy"
+    },
+    "pages": {
+      "page2": {
+        "grids": {
+          "setting": {
+            "CurrentSettingVariable": "Current Setting Variable",
+            "StartDate": "Start Date",
+            "EndDate": "End Date",
+            "LowestHandlingFee": "Lowest Handling Fee",
+            "HandlingFeeRebate": "Handling Fee Rebate",
+            "HighestLoss": "Highest Loss",
+            "LimitPurchasePrice": "Limit Purchase Price",
+            "Stocks": "Stocks",
+            "Capital": "Capital",
+            "CurrentDate": "Current Date",
+            "StocksData": "stocks data",
+            "PerShare": "per share",
+            "Restart": "Restart",
+            "RunTest": "Run Test",
+            "Once": "Once",
+            "OneYear": "One Year",
+            "Help": "get 100 stocks with random sampling from database"
+          },
+          "one": {},
+          "two": {
+            "Win": "win",
+            "Lose": "lose",
+            "WinRate": "win rate"
+          },
+          "three": {
+            "UnsettledProfit": "Unsettled Profit",
+            "Profit": "Profit"
+          },
+          "four": {
+            "Inventory": "Inventory",
+            "PurchaseRecord": "Purchase Record",
+            "SeeDetail": "See Detail",
+            "BuyPrice": "Buy Price",
+            "SellPrice": "Sell Price",
+            "BuyDate": "Buy Date",
+            "SellDate": "Sell Date",
+            "Profit": "Profit",
+            "BuyRequirement": "Buy Requirement",
+            "SellRequirement": "Sell Requirement",
+            "NotFoundData": "Not found data",
+            "ExportExcel":"Export Excel"
+          }
+        }
+      }
     }
   }
 }

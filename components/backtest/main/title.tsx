@@ -5,8 +5,9 @@ import { css } from "@emotion/css";
 import { useTranslation } from "next-i18next";
 import DataLoading from "../loading/dataLoading";
 import { useAppContext } from "../../../context/backtest";
+import { memo } from "react";
 
-export default function Title() {
+export default memo(function Title() {
   const { input } = useField("type");
   const { t } = useTranslation("backtest");
   const { dataRunning } = useAppContext();
@@ -35,17 +36,17 @@ export default function Title() {
           variant={input.value === "mutiple" ? "contained" : "outlined"}
           onClick={() => input.onChange("mutiple")}
         >
-          {t("main.title.mutiple")}
+          {t("main.title.Mutiple")}
         </Button>
         <Button
           classes={cssBtn}
           variant={input.value === "once" ? "contained" : "outlined"}
           onClick={() => input.onChange("once")}
         >
-          {t("main.title.once")}
+          {t("main.title.Once")}
         </Button>
         {dataRunning && <DataLoading />}
       </Stack>
     </div>
   );
-}
+})
