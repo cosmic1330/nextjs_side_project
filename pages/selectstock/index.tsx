@@ -48,7 +48,7 @@ export default function SelectStock({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://localhost:3000/api/selectstock/get`);
+  const res = await fetch(`http://localhost:3000/api/selectstock/get`,{method:"post"});
   const data = await res.json();
   return { props: { data } };
 }

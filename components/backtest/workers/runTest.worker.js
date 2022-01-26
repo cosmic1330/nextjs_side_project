@@ -12,12 +12,12 @@ addEventListener("message", (event) => {
   } else if (num) {
     context["customBuyMethod"] = highterBefore;
     context["customSellMethod"] = lowerBefore;
-    for (let i = 0; i <= num; i++) {
+    for (let i = 1; i <= num; i++) {
       context.run();
       if (i === num) {
         /* postMessage 只接受實例化的 function 、 class */
-        context["customBuyMethod"] = context["customBuyMethod"].toString();
-        context["customSellMethod"] = context["customSellMethod"].toString();
+        context["customBuyMethod"] = true
+        context["customSellMethod"] = true;
         postMessage(context);
       }
     }

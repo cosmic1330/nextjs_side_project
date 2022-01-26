@@ -32,19 +32,23 @@ export default memo(function DialogForm() {
 
   const regexValidate = (value) => {
     if (value) {
-      let reg = /\d/g;
-      let strArr = value.split(",");
-      let res = undefined;
-      // 比對
-      for (let i = 0; i < strArr.length; i++) {
-        const element = strArr[i];
-        if (!reg.test(element) || element.length !== 4) {
-          res = "Entry error";
-          break;
+      if(value === "all" || value === "random"){
+        return undefined;
+      } else{
+        let reg = /\d/g;
+        let strArr = value.split(",");
+        let res = undefined;
+        // 比對
+        for (let i = 0; i < strArr.length; i++) {
+          const element = strArr[i];
+          if (!reg.test(element) || element.length !== 4) {
+            res = "Entry error";
+            break;
+          }
         }
+        return res;
       }
-      return res;
-    } else return undefined;
+    } else return "Entry error";
   };
 
   const config = { validate: regexNumber };
@@ -198,7 +202,6 @@ export default memo(function DialogForm() {
           </Stack>
           <Stack direction="row" spacing={1}>
             <TextField
-              disabled
               label={t("main.form.JustBuy")}
               variant="standard"
               fullWidth
@@ -218,4 +221,4 @@ export default memo(function DialogForm() {
       </Dialog>
     </>
   );
-})
+});

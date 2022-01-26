@@ -15,6 +15,7 @@ export default memo(function Main() {
           handlingFeeRebate: 65,
           capital: 300000,
           hightStockPrice: 100,
+          justBuy: "random",
         }}
         render={() => (
           <main>

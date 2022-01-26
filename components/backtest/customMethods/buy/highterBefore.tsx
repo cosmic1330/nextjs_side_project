@@ -2,7 +2,7 @@ import { Williams, Ma } from "@ch20026103/anysis";
 export default function highterBefore(data) {
   let ma = new Ma();
   let williams = new Williams();
-  let maData = ma.getAllMa(data.slice(-11));
+  let maData = ma.getMa10(data.slice(-11));
   let stockData = williams.getAllWillams(data);
   let res = {
     status: false,

@@ -49,7 +49,8 @@ export default function Setting({
   };
 
   const onSubmit = debounce(async () => {
-    let data = stockData;
+    setDisabled(true);
+    let data;
     let options = {
       limitHandlingFee: parseInt(values.lowestHandlingFee),
       capital: parseInt(values.capital),
@@ -57,6 +58,20 @@ export default function Setting({
       handlingFeeRebate: parseInt(values.handlingFeeRebate) / 100,
       hightLoss: parseInt(values.highestLoss) / 100,
     };
+    if (values.justBuy === "all") {
+      const res = await fetch(`http://localhost:3000/api/selectstock/get`, {
+        method: "post",
+      });
+      data = await res.json();
+    } else if (values.justBuy === "random") {
+      data = stockData;
+    } else {
+      const res = await fetch(`http://localhost:3000/api/selectstock/get`, {
+        method: "post",
+        body: JSON.stringify({ id: values.justBuy }),
+      });
+      data = await res.json();
+    }
     set(data, options);
   }, 700);
 
@@ -123,17 +138,13 @@ export default function Setting({
         <Divider />
       </CardContent>
       <CardActions>
-        <Button variant="contained" onClick={onSubmit}>
+        <Button variant="contained" onClick={onSubmit} disabled={disabled}>
           {context
             ? t("main.pages.page2.grids.setting.Restart")
             : t("main.pages.page2.grids.setting.RunTest")}
         </Button>
         {context && (
-          <Button
-            variant="contained"
-            onClick={runOnce}
-            disabled={disabled}
-          >
+          <Button variant="contained" onClick={runOnce} disabled={disabled}>
             {t("main.pages.page2.grids.setting.Once")}
           </Button>
         )}
