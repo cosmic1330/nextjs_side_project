@@ -2,8 +2,8 @@
 export default function MysqlTest({data,data2}) {
   return (
     <div>
-        <pre>{JSON.stringify(data,0,2)}</pre>
-        <pre>{JSON.stringify(data2,0,2)}</pre>
+        <pre>{JSON.stringify(data)}</pre>
+        <pre>{JSON.stringify(data2)}</pre>
     </div>
   )
 }

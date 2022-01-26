@@ -7,7 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 
 export default function Search() {
-  const { select, onSubmit, method } = useContext(SelectStockContext);
+  const { select, method } = useContext(SelectStockContext);
   const theme = useTheme();
 
   const style = {
@@ -51,7 +51,6 @@ export default function Search() {
       <Select
         classes={style.select}
         defaultValue={method}
-        onChange={(element) => onSubmit(select, element.target.value)}
         labelId="方法"
       >
         <MenuItem value={1}>Method1</MenuItem>

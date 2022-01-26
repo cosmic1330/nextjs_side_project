@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import BasicTable from "./table";
 import FileDetail from "./filedetail";
 import Search from "./search";
-export default function Drawer({ children }) {
+export default function Drawer({ children=undefined }) {
   const style = css`
     text-align: center;
     padding: 50px 50px 20px 300px;
@@ -13,9 +13,9 @@ export default function Drawer({ children }) {
   return (
     <main className={style}>
       {children}
-      <div className="searchArea">
+      {/* <div className="searchArea">
         <Search />
-      </div>
+      </div> */}
       <FileDetail />
       <div className="tableArea">
         <BasicTable />

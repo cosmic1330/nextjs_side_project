@@ -12,18 +12,18 @@ import ListCentent from "./list";
 import { SelectStockContext } from "../../../context/selectstock";
 
 export default function Drawer() {
-  const { hover, setHover } = useContext(SelectStockContext);
+  const { hidden, setHidden } = useContext(SelectStockContext);
   const mouseOver = () => {
-    setHover((pre) => !pre);
+    setHidden((pre) => !pre);
   };
   return (
-    <StyledDrawer open={true} hover={hover}>
+    <StyledDrawer open={true} hidden={hidden}>
       <StyledHeader>
         <IconButton color="inherit" onClick={mouseOver}>
           <MenuIcon />
         </IconButton>
         <Typography variant="h4" component="div">
-          {hover && "MStock"}
+          {hidden && "MStock"}
         </Typography>
       </StyledHeader>
       <StyledMain>

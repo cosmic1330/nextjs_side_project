@@ -7,28 +7,16 @@ import Main from "../../components/selectstock/main";
 import { SelectStockContext } from "../../context/selectstock";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import useList from "../../components/selectstock/hooks/useList";
 
-export default function SelectStock() {
-  const [list, setList] = useState([]);
+export default function SelectStock({ data }) {
   const [select, setSelect] = useState("buy");
-  const [hover, setHover] = useState(true);
+  const [hidden, setHidden] = useState(true);
   const [method, setMethod] = useState(3);
   const [loading, setLoading] = useState(false);
+  const list = useList(data, select);
 
-  const onSubmit = async (type, methodIndex) => {
-    setLoading(true);
-    if (type === "buy" || type === "sell") {
-      const res = await fetch(
-        `http://localhost:3000/api/selectstock/${type}/method${methodIndex}`
-      );
-      let response = await res.json();
-      setList(response);
-      setMethod(methodIndex);
-    } else {
-      alert("尚未開發");
-    }
-    setLoading(false);
-  };
+  const get = async () => {};
 
   return (
     <ThemeProvider>
@@ -39,15 +27,14 @@ export default function SelectStock() {
         value={{
           select,
           setSelect,
-          hover,
-          setHover,
+          hidden,
+          setHidden,
           list,
           method,
-          onSubmit,
         }}
       >
         <Drawer />
-        <Main>選股</Main>
+        <Main></Main>
       </SelectStockContext.Provider>
       <Snackbar
         open={false}
@@ -61,8 +48,7 @@ export default function SelectStock() {
 }
 
 export async function getServerSideProps(context) {
-  // 取得今日買進推薦股
-
-  // 取得今日賣出推薦股
-  return { props: {} };
+  const res = await fetch(`http://localhost:3000/api/selectstock/get`);
+  const data = await res.json();
+  return { props: { data } };
 }

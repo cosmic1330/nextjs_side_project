@@ -129,7 +129,11 @@ export default function Setting({
             : t("main.pages.page2.grids.setting.RunTest")}
         </Button>
         {context && (
-          <Button variant="contained" onClick={runOnce} disabled={disabled}>
+          <Button
+            variant="contained"
+            onClick={runOnce}
+            disabled={disabled}
+          >
             {t("main.pages.page2.grids.setting.Once")}
           </Button>
         )}

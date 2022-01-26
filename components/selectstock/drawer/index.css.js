@@ -2,7 +2,7 @@ import Drawer from "@mui/material/Drawer";
 import { css } from "@emotion/css";
 import { useTheme } from "@mui/material/styles";
 
-export const StyledDrawer = ({ hover, open, children, ...props }) => {
+export const StyledDrawer = ({ hidden, open, children, ...props }) => {
   const theme = useTheme();
   const style = {
     small: {
@@ -29,7 +29,7 @@ export const StyledDrawer = ({ hover, open, children, ...props }) => {
   return (
     <Drawer
       elevation={8}
-      classes={hover ? style.big : style.small}
+      classes={hidden ? style.big : style.small}
       open={open}
       {...props}
       variant="persistent"

@@ -73,6 +73,7 @@ export default function Four({ grid, record, others }) {
     grid-row-end: ${grid[3]};
     background: #f4f4f4;
     transition: 1s;
+    overflow: auto;
   `;
 
   const chips = useCallback(() => {

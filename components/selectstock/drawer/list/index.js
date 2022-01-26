@@ -11,7 +11,7 @@ import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import { SelectStockContext } from "../../../../context/selectstock";
 
 export default function ListCentent() {
-  const { select, setSelect, onSubmit, method } = useContext(
+  const { select, setSelect } = useContext(
     SelectStockContext
   );
   const theme = useTheme();
@@ -41,7 +41,6 @@ export default function ListCentent() {
     },
   };
   const handleClick = (index) => () => {
-    onSubmit(index, method);
     setSelect(index);
   };
   return (

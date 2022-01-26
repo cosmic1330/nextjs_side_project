@@ -36,7 +36,7 @@ export default function BasicTable() {
   return (
     <TableContainer>
       <Table>
-        {(!list.status || list.data.length === 0) && (
+        {(!list || list.length === 0) && (
           <caption style={{ textAlign: "center", fontSize: "18px" }}>
             No Data
           </caption>
@@ -65,8 +65,8 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.status &&
-            list.data.map((row, index) => (
+          {list.length > 0 &&
+            list.map((row, index) => (
               <TableRow key={row.name} hover>
                 <TableCell classes={style.bodyCell} component="th" scope="row">
                   {" "}
@@ -105,7 +105,7 @@ export default function BasicTable() {
                   {row.c}
                 </TableCell>
                 <TableCell classes={style.bodyCell} align="center">
-                  {`${row.shore}`} / {`${row.pressure}`}
+                  WIP
                 </TableCell>
                 <TableCell classes={style.bodyCell} align="center">
                   <IconButton color="inherit">
@@ -114,30 +114,30 @@ export default function BasicTable() {
                 </TableCell>
                 <TableCell classes={style.bodyCell} align="center">
                   <Typography align="left">
-                    超強勢 : {row.gold.data["超強勢"]}
+                    超強勢 : {row.goldData["superStrong"]}
                   </Typography>
                   <Typography align="left">
-                    ---強勢 : {row.gold.data["強勢"]}
+                    ---強勢 : {row.goldData["strong"]}
                   </Typography>
                   <Typography align="left">
-                    ---中度 : {row.gold.data["中度"]}
+                    ---中度 : {row.goldData["middle"]}
                   </Typography>
                   <Typography align="left">
-                    ---弱勢 : {row.gold.data["弱勢"]}
+                    ---弱勢 : {row.goldData["weak"]}
                   </Typography>
                   <Typography align="left">
-                    超弱勢 : {row.gold.data["超弱勢"]}
+                    超弱勢 : {row.goldData["superWeak"]}
                   </Typography>
                 </TableCell>
                 <TableCell classes={style.bodyCell} align="center">
                   <Typography align="left">
-                    上關 : {row.three["上關"]}
+                    上關 : {row.three["top"]}
                   </Typography>
                   <Typography align="left">
-                    中關 : {row.three["中關"]}
+                    中關 : {row.three["middle"]}
                   </Typography>
                   <Typography align="left">
-                    下關 : {row.three["下關"]}
+                    下關 : {row.three["bottom"]}
                   </Typography>
                 </TableCell>
               </TableRow>
