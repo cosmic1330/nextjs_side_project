@@ -5,6 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import DialogForm from "./dialogForm";
 
 export default function Header() {
   const { palette, custom } = useTheme();
@@ -51,38 +52,43 @@ export default function Header() {
     }
   `;
 
+  const cssDiv = css`display:flex; gap:10px`;
+
   return (
     <header className={cssHeader}>
       <h1 className={cssH1}>BT</h1>
-      <Button variant="outlined" onClick={handleClick} className={cssLngBtn}>
-        {router.locale}
-      </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem
-          className={cssMenuItem}
-          onClick={() =>
-            router.push("/backtest", "/backtest", { locale: "en" })
-          }
-        >
-          En
-        </MenuItem>
-        <MenuItem
-          className={cssMenuItem}
-          onClick={() =>
-            router.push("/backtest", "/backtest", { locale: "zh-CN" })
-          }
-        >
-          简
-        </MenuItem>
-        <MenuItem
-          className={cssMenuItem}
-          onClick={() =>
-            router.push("/backtest", "/backtest", { locale: "zh-TW" })
-          }
-        >
-          繁
-        </MenuItem>
-      </Menu>
+      <div className={cssDiv}>
+        <DialogForm/>
+        <Button variant="outlined" onClick={handleClick} className={cssLngBtn}>
+          {router.locale}
+        </Button>
+        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          <MenuItem
+            className={cssMenuItem}
+            onClick={() =>
+              router.push("/backtest", "/backtest", { locale: "en" })
+            }
+          >
+            En
+          </MenuItem>
+          <MenuItem
+            className={cssMenuItem}
+            onClick={() =>
+              router.push("/backtest", "/backtest", { locale: "zh-CN" })
+            }
+          >
+            简
+          </MenuItem>
+          <MenuItem
+            className={cssMenuItem}
+            onClick={() =>
+              router.push("/backtest", "/backtest", { locale: "zh-TW" })
+            }
+          >
+            繁
+          </MenuItem>
+        </Menu>
+      </div>
     </header>
   );
 }

@@ -9,6 +9,8 @@ import useWorkerStockData from "../../components/backtest/hooks/useWorkerStockDa
 import useStockIds from "../../components/backtest/hooks/useStockIds";
 import { useEffect } from "react";
 import { AppWrapper } from "../../context/backtest";
+import { Form } from "react-final-form";
+
 
 export async function getStaticProps({ locale }) {
   return {
@@ -44,8 +46,25 @@ function Content({ ids }) {
           disabled: ids.length !== 0 ? false : true,
         }}
       />
-      <Header />
-      <Main {...{set}}/>
+
+      <Form
+        onSubmit={() => { }}
+        initialValues={{
+          type: "once",
+          lowestHandlingFee: 20,
+          highestLoss: 15,
+          handlingFeeRebate: 65,
+          capital: 300000,
+          hightStockPrice: 100,
+          justBuy: "random",
+        }}
+        render={() => (
+          <form>
+            <Header />
+            <Main {...{ set }} />
+          </form>
+        )}
+      />
     </BackTestThemeProvider>
   );
 }

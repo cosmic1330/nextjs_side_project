@@ -10,7 +10,7 @@ import { useCallback, useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useField } from "react-final-form";
-import mq from "../theme/breakpoint";
+import mq from "../../theme/breakpoint";
 import { useTranslation } from "next-i18next";
 import { memo } from "react";
 
@@ -79,23 +79,6 @@ export default memo(function DialogForm() {
     validate: regexValidate,
   });
 
-  const cssBtn = css`
-    position: fixed;
-    right: 40px;
-    bottom: 40px;
-    height: 60px;
-    color: ${custom.text.dark};
-    border-color: ${custom.text.dark};
-    :hover {
-      border-color: ${custom.text.dark};
-    }
-    ${mq[0]} {
-      right: 20px;
-      bottom: 20px;
-      height: 40px;
-    }
-  `;
-
   const cssContent = css`
     & > * {
       padding: 20px 0;
@@ -112,7 +95,7 @@ export default memo(function DialogForm() {
 
   return (
     <>
-      <Button variant="outlined" className={cssBtn} onClick={handleOpen}>
+      <Button variant="outlined" onClick={handleOpen}>
         <SettingsIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
