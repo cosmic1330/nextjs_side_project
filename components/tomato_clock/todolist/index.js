@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { css } from "@emotion/css";
 import AddIcon from "@mui/icons-material/Add";
 import DialogComponent from "./dialog";
 import TimeLine from "./timeline";
+import { connect } from "react-redux";
 
 const style = css`
   padding: 20px;
@@ -24,28 +25,32 @@ const style = css`
   }
 `;
 
-export default function Page() {
+function Page({tasks}) {
   const [open, setOpen] = useState(false);
-  const [render, setRender] = useState(false);
-  const [list, setList] = useState([]);
   const handleOpenDialog = () => {
     setOpen(true);
   };
   const handleCloseDialog = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    let data = localStorage.getItem("to-do-list");
-    setList(JSON.parse(data));
-  }, [render]);
   return (
     <div className={style}>
+      
+      
       <button onClick={handleOpenDialog}>
         Add new tasks
         <AddIcon />
       </button>
-      <TimeLine data={list} />
-      <DialogComponent {...{ open, handleCloseDialog, setRender }} />
+      <TimeLine data={tasks} />
+      <DialogComponent {...{ open, handleCloseDialog }} />
     </div>
   );
 }
+
+const PageContainer = connect(
+  (state) => ({
+    tasks: state.tasks
+  }),{} 
+)(Page);
+
+export default PageContainer;

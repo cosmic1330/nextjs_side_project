@@ -1,5 +1,6 @@
-import AppleClock from '../../components/apple_clock'
-import Page from './page';
+import AppleClock from '../../components/tomato_clock/clock'
+import Page from '../../components/tomato_clock/todolist';
+import Alert from '../../components/tomato_clock/alert';
 import { css, cx } from '@emotion/css'
 
 
@@ -32,6 +33,7 @@ export default function TodoList() {
         </div>
       </article>
       <article className="area2">
+          <Alert/>
         <Page/>
       </article>
     </div>

@@ -3,50 +3,38 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { css } from "@emotion/css";
 import Button from "@mui/material/Button";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
+import { connect } from "react-redux";
+import {
+  createIncrementTaskAction,
+  createDecrementTaskAction,
+} from "../../../redux/actions/tasks";
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
 const style = css`
   .MuiPaper-root {
     padding: 20px;
     width: 400px;
   }
 `;
-export default function DialogComponent({
+function DialogComponent({
   open,
   handleCloseDialog,
-  setRender,
+  ...props
 }) {
   const nameRef = useRef(null);
   const timeRef = useRef(null);
   const descriptionRef = useRef(null);
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      setRender((pre) => !pre);
-      let arr = localStorage.getItem("to-do-list");
-      arr = JSON.parse(arr);
-      if (!Array.isArray(arr)) {
-        arr = [];
-      }
-      arr.push(event.target.value);
-      localStorage.setItem("to-do-list", JSON.stringify(arr));
-      handleCloseDialog();
-    }
-  };
   const handleClick = () => {
-    setRender((pre) => !pre);
-    let arr = localStorage.getItem("to-do-list");
-    arr = JSON.parse(arr);
-    if (!Array.isArray(arr)) {
-      arr = [];
-    }
-    if (nameRef.current.value) {
-      arr.push({
-        name: nameRef.current.value,
-        time: timeRef.current.value,
-        description: descriptionRef.current.value,
-      });
-      localStorage.setItem("to-do-list", JSON.stringify(arr));
-    }
+    let newTask = {
+          name: nameRef.current.value,
+          time: timeRef.current.value,
+          description: descriptionRef.current.value,
+        }
+    props.increment(newTask)
     handleCloseDialog();
   };
 
@@ -58,21 +46,22 @@ export default function DialogComponent({
       <TextField
         label="Task name in here"
         variant="outlined"
-        onKeyPress={handleKeyPress}
         inputRef={nameRef}
       />
       <br />
       <TextField
         label="Time in here"
         variant="outlined"
-        onKeyPress={handleKeyPress}
         inputRef={timeRef}
+        placeholder={"2021-03-22 19:00"}
       />
+      <FormGroup>
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Today" disabled/>
+      </FormGroup>
       <br />
       <TextField
         label="Description in here"
         variant="outlined"
-        onKeyPress={handleKeyPress}
         inputRef={descriptionRef}
       />
       <br />
@@ -82,3 +71,15 @@ export default function DialogComponent({
     </Dialog>
   );
 }
+
+const DialogContainer = connect(
+  (state) => ({
+    tasks: state.tasks
+  }),
+  {
+    increment: createIncrementTaskAction,
+    decrement: createDecrementTaskAction,
+  } 
+)(DialogComponent);
+
+export default DialogContainer;
