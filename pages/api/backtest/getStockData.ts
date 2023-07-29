@@ -1,10 +1,12 @@
+import { readFileSync } from "fs";
+import path from "path";
 import { connectToDatabase } from "../../../lib/db/mongodb";
 
 export default async (req, res) => {
-  const { db } = await connectToDatabase();
   try {
+    const { db } = await connectToDatabase();
     if (!req.query?.id) {
-      res.status(404).json('Not found id !');
+      res.status(404).json("Not found id !");
     }
     let data = await db
       .collection(req.query.id)
@@ -13,7 +15,16 @@ export default async (req, res) => {
       .toArray();
     res.json(data);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "datas",
+      "20210828.json"
+    );
+    let jsonData = readFileSync(filePath, "utf8");
+    jsonData = JSON.parse(jsonData);
+    res.json(jsonData[req.query.id]);
+    // console.log(error);
+    // res.status(500).json({ error });
   }
 };
